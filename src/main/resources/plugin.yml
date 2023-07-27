@@ -1,0 +1,9 @@
+name: Melodia
+version: 1.0.0
+main: dev.meluhdy.melodia.Melodia
+description: Core library for Melody's plugins
+author: Melody
+website: https://meluhdy.dev
+api-version: '1.20'
+load: POSTWORLD
+prefix: Melodia
