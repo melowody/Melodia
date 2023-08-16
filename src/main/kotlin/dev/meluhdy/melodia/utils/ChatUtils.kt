@@ -5,8 +5,8 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 
 object ChatUtils {
 
-    fun colorize(message: TextComponent, identifier: Char = '&'): TextComponent {
-        return LegacyComponentSerializer.legacy(identifier).deserialize(message.content())
+    fun colorize(message: String, identifier: Char = '&'): TextComponent {
+        return LegacyComponentSerializer.legacy(identifier).deserialize(message)
     }
 
 }
