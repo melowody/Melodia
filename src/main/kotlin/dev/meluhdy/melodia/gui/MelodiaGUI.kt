@@ -11,14 +11,14 @@ import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 
-abstract class MelodiaGUI(size: Int, title: String, p: Player) : Listener {
+abstract class MelodiaGUI(rows: Int, title: String, p: Player) : Listener {
 
     val p: Player
     val inv: Inventory
 
     init {
         this.p = p
-        this.inv = Bukkit.createInventory(null, size, ChatUtils.colorize(title))
+        this.inv = Bukkit.createInventory(null, rows * 9, ChatUtils.colorize(title))
         Bukkit.getPluginManager().registerEvents(this, Melodia.plugin!!)
     }
 
