@@ -1,4 +1,4 @@
-package dev.meluhdy.melodia.api
+package dev.meluhdy.melodia.command
 
 import dev.meluhdy.melodia.Melodia
 import dev.meluhdy.melodia.annotations.MissingAnnotationException
