@@ -21,7 +21,7 @@ abstract class MelodiaCommand(command: String, subCommand: Boolean) : CommandExe
             Melodia.plugin!!.getCommand(command)!!.setExecutor(this)
     }
 
-    protected fun checkAnnotations(sender: CommandSender) : Boolean {
+    private fun checkAnnotations(sender: CommandSender) : Boolean {
         val safeCommandMethod = this::class.java.getDeclaredMethod("safeCommand", CommandSender::class.java, Command::class.java, String::class.java, Array<String>::class.java)
         for (annotation in safeCommandMethod.annotations) {
             when (annotation) {
