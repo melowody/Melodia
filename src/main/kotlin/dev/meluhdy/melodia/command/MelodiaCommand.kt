@@ -10,16 +10,9 @@ import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-abstract class MelodiaCommand(command: String, subCommand: Boolean) : CommandExecutor {
+abstract class MelodiaCommand(var command: String) : CommandExecutor {
 
-    val command: String
-    abstract val subCommands: ArrayList<MelodiaCommand>
-
-    init {
-        this.command = command
-        if (!subCommand)
-            Melodia.plugin!!.getCommand(command)!!.setExecutor(this)
-    }
+    abstract fun registerSubCommands(): ArrayList<MelodiaCommand>
 
     private fun checkAnnotations(sender: CommandSender) : Boolean {
         val safeCommandMethod = this::class.java.getDeclaredMethod("safeCommand", CommandSender::class.java, Command::class.java, String::class.java, Array<String>::class.java)
@@ -48,13 +41,10 @@ abstract class MelodiaCommand(command: String, subCommand: Boolean) : CommandExe
     }
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
-        if (this.subCommands.isNotEmpty() && args.isNotEmpty()) {
-            for (subCommand in subCommands) {
-                if (subCommand.command == args[0]) {
+        if (args.isNotEmpty())
+            for (subCommand in this.registerSubCommands())
+                if (subCommand.command == args[0])
                     return subCommand.onCommand(sender, command, label, args.copyOfRange(1, args.size))
-                }
-            }
-        }
         if (!checkAnnotations(sender)) return false
         return safeCommand(sender, command, label, args)
     }
