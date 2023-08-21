@@ -6,6 +6,7 @@ import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.Inventory
@@ -22,22 +23,36 @@ abstract class MelodiaGUI(rows: Int, title: String, p: Player) : Listener {
         Bukkit.getPluginManager().registerEvents(this, Melodia.plugin!!)
     }
 
+    protected abstract fun getMelodiaItems(): ArrayList<MelodiaGUIItem>
+
     fun openInventory() {
         initializeItems()
         this.p.openInventory(this.inv)
     }
 
-    protected abstract fun initializeItems()
+    private fun initializeItems() {
+        extraItems()
+
+        for (item in getMelodiaItems()) {
+            this.inv.addItem(item)
+        }
+    }
+
+    protected abstract fun extraItems()
 
     protected fun clearItems() {
         for (i in 0..this.inv.size)
             this.inv.setItem(i, ItemStack(Material.AIR))
     }
 
-    @EventHandler
-    fun invClickHandler(e: InventoryClickEvent) {
+    @EventHandler(priority = EventPriority.HIGH)
+    fun overrideInvCreative(e: InventoryClickEvent) {
         if (e.inventory != this.inv) return
-        if (e.rawSlot < this.inv.size) e.isCancelled = true
+        if (e.rawSlot < this.inv.size) {
+            e.isCancelled = true
+            return
+        }
+        getMelodiaItems().stream().filter { item -> item.position == e.rawSlot }.findFirst().ifPresent { item -> item.clickFunc.accept(e) }
         onInventoryClick(e)
     }
 
