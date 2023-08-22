@@ -14,8 +14,8 @@ import org.bukkit.inventory.ItemStack
 
 abstract class MelodiaGUI(rows: Int, title: String, p: Player) : Listener {
 
-    val p: Player
-    val inv: Inventory
+    protected val p: Player
+    protected val inv: Inventory
 
     init {
         this.p = p
@@ -50,7 +50,6 @@ abstract class MelodiaGUI(rows: Int, title: String, p: Player) : Listener {
         if (e.inventory != this.inv) return
         if (e.rawSlot < this.inv.size) {
             e.isCancelled = true
-            return
         }
         getMelodiaItems().stream().filter { item -> item.position == e.rawSlot }.findFirst().ifPresent { item -> item.clickFunc.accept(e) }
         onInventoryClick(e)

@@ -2,6 +2,7 @@ package dev.meluhdy.melodia.utils
 
 import com.mojang.authlib.GameProfile
 import com.mojang.authlib.properties.Property
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.SkullMeta
@@ -56,6 +57,21 @@ object ItemUtils {
         profileField.isAccessible = true
         profileField.set(itemMeta, profile)
 
+        item.setItemMeta(itemMeta)
+        return modifyItem(item, title, *lore)
+
+    }
+
+    fun createSkull(
+        player: UUID,
+        count: Int = 1,
+        title: String? = null,
+        vararg lore: String
+    ): ItemStack {
+
+        val item = ItemStack(Material.PLAYER_HEAD, count)
+        val itemMeta: SkullMeta = item.itemMeta as SkullMeta
+        itemMeta.setOwningPlayer(Bukkit.getOfflinePlayer(player))
         item.setItemMeta(itemMeta)
         return modifyItem(item, title, *lore)
 
