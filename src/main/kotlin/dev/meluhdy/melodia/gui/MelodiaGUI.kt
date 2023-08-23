@@ -30,7 +30,8 @@ abstract class MelodiaGUI(rows: Int, title: String, p: Player) : Listener {
         this.p.openInventory(this.inv)
     }
 
-    private fun initializeItems() {
+    protected fun initializeItems() {
+        clearItems()
         extraItems()
 
         for (item in getMelodiaItems()) {
@@ -41,12 +42,12 @@ abstract class MelodiaGUI(rows: Int, title: String, p: Player) : Listener {
     protected abstract fun extraItems()
 
     protected fun clearItems() {
-        for (i in 0..this.inv.size)
+        for (i in 0..<this.inv.size)
             this.inv.setItem(i, ItemStack(Material.AIR))
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    fun overrideInvCreative(e: InventoryClickEvent) {
+    fun handleClick(e: InventoryClickEvent) {
         if (e.inventory != this.inv) return
         if (e.rawSlot < this.inv.size) {
             e.isCancelled = true
