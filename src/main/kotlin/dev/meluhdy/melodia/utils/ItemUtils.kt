@@ -57,7 +57,7 @@ object ItemUtils {
         profileField.isAccessible = true
         profileField.set(itemMeta, profile)
 
-        item.setItemMeta(itemMeta)
+        item.itemMeta = itemMeta
         return modifyItem(item, title, *lore)
 
     }
@@ -71,8 +71,8 @@ object ItemUtils {
 
         val item = ItemStack(Material.PLAYER_HEAD, count)
         val itemMeta: SkullMeta = item.itemMeta as SkullMeta
-        itemMeta.setOwningPlayer(Bukkit.getOfflinePlayer(player))
-        item.setItemMeta(itemMeta)
+        itemMeta.owningPlayer = Bukkit.getOfflinePlayer(player)
+        item.itemMeta = itemMeta
         return modifyItem(item, title, *lore)
 
     }
