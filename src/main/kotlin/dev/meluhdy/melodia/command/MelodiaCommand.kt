@@ -1,6 +1,5 @@
 package dev.meluhdy.melodia.command
 
-import dev.meluhdy.melodia.Melodia
 import dev.meluhdy.melodia.annotations.MissingAnnotationException
 import dev.meluhdy.melodia.annotations.RequirePerm
 import dev.meluhdy.melodia.annotations.UserOnly
