@@ -7,7 +7,7 @@ object CommandManager {
     private val commandList: ArrayList<MelodiaCommand> = ArrayList()
     private val subCommandList: ArrayList<MelodiaCommand> = ArrayList()
 
-    fun addSubcommand(command: MelodiaCommand) {
+    private fun addSubcommand(command: MelodiaCommand) {
 
         command.registerSubCommands().forEach { subCommand -> addSubcommand(subCommand) }
 
