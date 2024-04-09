@@ -8,10 +8,16 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
+import java.lang.reflect.Method
+import kotlin.reflect.KClass
 
 abstract class MelodiaCommand(var command: String) : CommandExecutor {
 
     abstract fun registerSubCommands(): ArrayList<MelodiaCommand>
+
+    private fun hasAnnotation(method: Method, clazz: KClass<out Annotation>) : Boolean {
+        return method.isAnnotationPresent(clazz.java)
+    }
 
     private fun checkAnnotations(sender: CommandSender) : Boolean {
         val safeCommandMethod = this::class.java.getDeclaredMethod("safeCommand", CommandSender::class.java, Command::class.java, String::class.java, Array<String>::class.java)
@@ -25,7 +31,7 @@ abstract class MelodiaCommand(var command: String) : CommandExecutor {
                     }
                 }
                 is RequirePerm -> {
-                    if (!(safeCommandMethod.isAnnotationPresent(UserOnly::class.java))) {
+                    if (!hasAnnotation(safeCommandMethod, UserOnly::class)) {
                         throw MissingAnnotationException("@RequirePerm requires @UserOnly to be present.")
                     }
                     if (!(sender as Player).hasPermission(annotation.perm)) {
