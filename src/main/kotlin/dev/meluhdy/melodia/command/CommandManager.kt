@@ -1,6 +1,6 @@
 package dev.meluhdy.melodia.command
 
-import dev.meluhdy.melodia.Melodia
+import dev.meluhdy.melodia.pluginInstance
 
 object CommandManager {
 
@@ -9,7 +9,7 @@ object CommandManager {
 
     private fun addSubcommand(command: MelodiaCommand) {
 
-        command.registerSubCommands().forEach { subCommand -> addSubcommand(subCommand) }
+        command.subCommands.forEach { subCommand -> addSubcommand(subCommand) }
 
         if (subCommandList.any { subCommand -> subCommand.command == command.command }) return
 
@@ -20,7 +20,7 @@ object CommandManager {
     fun addCommand(command: MelodiaCommand) {
 
         // Handle subcommands
-        command.registerSubCommands().forEach { subCommand -> addSubcommand(subCommand) }
+        command.subCommands.forEach { subCommand -> addSubcommand(subCommand) }
 
         // If already added, return
         if (subCommandList.any { subCommand -> subCommand.command == command.command }) return
@@ -33,7 +33,7 @@ object CommandManager {
 
     fun registerCommands() {
         for (command in commandList) {
-            Melodia.plugin!!.getCommand(command.command)!!.setExecutor(command)
+            pluginInstance.getCommand(command.command)!!.setExecutor(command)
         }
     }
 

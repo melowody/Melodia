@@ -1,6 +1,6 @@
 package dev.meluhdy.melodia.gui
 
-import dev.meluhdy.melodia.Melodia
+import dev.meluhdy.melodia.pluginInstance
 import dev.meluhdy.melodia.utils.ChatUtils
 import org.bukkit.Bukkit
 import org.bukkit.Material
@@ -12,16 +12,22 @@ import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 
+/**
+ * A GUI wrapper class to make creating GUIs much easier
+ */
 abstract class MelodiaGUI(rows: Int, title: String, protected val p: Player) : Listener {
 
-    protected val inv: Inventory
+    @SuppressWarnings("WeakerAccess")
+    protected val inv: Inventory = Bukkit.createInventory(null, rows * 9, ChatUtils.colorize(title))
 
     init {
-        this.inv = Bukkit.createInventory(null, rows * 9, ChatUtils.colorize(title))
-        Bukkit.getPluginManager().registerEvents(this, Melodia.plugin!!)
+        Bukkit.getPluginManager().registerEvents(this, pluginInstance)
     }
 
-    protected abstract fun getMelodiaItems(): ArrayList<MelodiaGUIItem>
+    /**
+     * The function to generate the items to be shown in the inventory
+     */
+    protected abstract val melodiaItems: ArrayList<MelodiaGUIItem>
 
     fun openInventory() {
         initializeItems()
@@ -32,13 +38,17 @@ abstract class MelodiaGUI(rows: Int, title: String, protected val p: Player) : L
         clearItems()
         extraItems()
 
-        for (item in getMelodiaItems()) {
+        for (item in melodiaItems) {
             this.inv.addItem(item)
         }
     }
 
+    /**
+     * Function to place extra non-functional items
+     */
     protected abstract fun extraItems()
 
+    @SuppressWarnings("WeakerAccess")
     protected fun clearItems() {
         for (i in 0..<this.inv.size)
             this.inv.setItem(i, ItemStack(Material.AIR))
@@ -50,10 +60,15 @@ abstract class MelodiaGUI(rows: Int, title: String, protected val p: Player) : L
         if (e.rawSlot < this.inv.size) {
             e.isCancelled = true
         }
-        getMelodiaItems().stream().filter { item -> item.position == e.rawSlot }.findFirst().ifPresent { item -> item.clickFunc.accept(e) }
+        melodiaItems.stream().filter { item -> item.position == e.rawSlot }.findFirst().ifPresent { item -> item.clickFunc.accept(e) }
         onInventoryClick(e)
     }
 
+    /**
+     * Function to run when a player clicks somewhere in the inventory that's not on a MelodiaGUIItem
+     *
+     * @param e The InventoryClickEvent
+     */
     protected abstract fun onInventoryClick(e: InventoryClickEvent)
 
 }

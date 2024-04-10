@@ -11,8 +11,21 @@ import java.util.Base64
 import java.util.UUID
 import java.util.stream.Collectors
 
+/**
+ * A collection of utils for modifying and creating ItemStacks
+ */
+@Suppress("unused")
 object ItemUtils {
 
+    /**
+     * Modifies an existing Item to add different lore and a different name.
+     *
+     * @param item The ItemStack to modify
+     * @param title The new title to give it
+     * @param lore The new lore to give it, by lines
+     *
+     * @return The modified ItemStack
+     */
     private fun modifyItem(
         item: ItemStack,
         title: String? = null,
@@ -31,6 +44,17 @@ object ItemUtils {
         return item
     }
 
+    /**
+     * Creates an ItemStack with custom lore and a title from scratch.
+     *
+     * @param mat The Material for the ItemStack
+     * @param count The amount in the ItemStack
+     * @param title The title of the ItemStack
+     * @param lore The lore of the ItemStack
+     *
+     * @return The custom generated ItemStack
+     */
+    @Suppress("unused")
     fun createItem(
         mat: Material,
         count: Int = 1,
@@ -38,6 +62,17 @@ object ItemUtils {
         vararg lore: String
     ): ItemStack = modifyItem(ItemStack(mat, count), title, *lore)
 
+    /**
+     * Creates a custom skull given a skin URL.
+     *
+     * @param skullUrl The URL for the skin to pull the skull from
+     * @param count The amount in the ItemStack
+     * @param title The title of the ItemStack
+     * @param lore The lore of the ItemStack
+     *
+     * @return The custom generated skull
+     */
+    @Suppress("unused")
     fun createSkull(
         skullUrl: String,
         count: Int = 1,
@@ -62,6 +97,17 @@ object ItemUtils {
 
     }
 
+    /**
+     * Creates a custom skull given a player UUID.
+     *
+     * @param player The UUID of the player to steal the skull of
+     * @param count The amount in the ItemStack
+     * @param title The title of the ItemStack
+     * @param lore The lore of the ItemStack
+     *
+     * @return The custom generated skull
+     */
+    @Suppress("unused")
     fun createSkull(
         player: UUID,
         count: Int = 1,

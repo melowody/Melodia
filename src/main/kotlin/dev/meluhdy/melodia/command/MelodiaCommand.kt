@@ -11,9 +11,17 @@ import org.bukkit.entity.Player
 import java.lang.reflect.Method
 import kotlin.reflect.KClass
 
+/**
+ * Wrapper class for Commands to make them easier to deal with
+ *
+ * @param command The name of the command or sub-command
+ */
 abstract class MelodiaCommand(var command: String) : CommandExecutor {
 
-    abstract fun registerSubCommands(): ArrayList<MelodiaCommand>
+    /**
+     * List of commands that are sub-commands of this one
+     */
+    abstract val subCommands: ArrayList<MelodiaCommand>
 
     private fun hasAnnotation(method: Method, clazz: KClass<out Annotation>) : Boolean {
         return method.isAnnotationPresent(clazz.java)
@@ -47,13 +55,23 @@ abstract class MelodiaCommand(var command: String) : CommandExecutor {
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
         if (args.isNotEmpty())
-            for (subCommand in this.registerSubCommands())
+            for (subCommand in subCommands)
                 if (subCommand.command == args[0])
                     return subCommand.onCommand(sender, command, label, args.copyOfRange(1, args.size))
         if (!checkAnnotations(sender)) return false
         return safeCommand(sender, command, label, args)
     }
 
+    /**
+     * The logic for the command
+     *
+     * @param sender The entity that triggered the command
+     * @param command The command itself
+     * @param label I do not know
+     * @param args The arguments for the command
+     *
+     * @return Whether the command encountered an error or not
+     */
     abstract fun safeCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean
 
 }
