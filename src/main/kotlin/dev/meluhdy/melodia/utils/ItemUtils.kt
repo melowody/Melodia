@@ -1,13 +1,12 @@
 package dev.meluhdy.melodia.utils
 
-import com.mojang.authlib.GameProfile
-import com.mojang.authlib.properties.Property
+import com.destroystokyo.paper.profile.PlayerProfile
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.SkullMeta
-import java.lang.reflect.Field
-import java.util.Base64
+import java.net.MalformedURLException
+import java.net.URL
 import java.util.UUID
 import java.util.stream.Collectors
 
@@ -16,6 +15,20 @@ import java.util.stream.Collectors
  */
 @Suppress("unused")
 object ItemUtils {
+
+    private fun getProfile(url: String) : PlayerProfile {
+        val profile = Bukkit.createProfile(UUID.randomUUID())
+        val textures = profile.textures
+        val urlObject: URL
+        try {
+            urlObject = URL(url)
+        } catch (e: MalformedURLException) {
+            throw RuntimeException("Invalid URL", e)
+        }
+        textures.skin = urlObject
+        profile.setTextures(textures)
+        return profile
+    }
 
     /**
      * Modifies an existing Item to add different lore and a different name.
@@ -83,16 +96,11 @@ object ItemUtils {
         val item = ItemStack(Material.PLAYER_HEAD, count)
         if (skullUrl.isEmpty()) return modifyItem(item, title, *lore)
 
-        val itemMeta: SkullMeta = item.itemMeta as SkullMeta
-        val profile = GameProfile(UUID.randomUUID(), null)
-        val encodeData: ByteArray = Base64.getEncoder().encode("{textures:{SKIN:{url:\"$skullUrl\"}}}".encodeToByteArray())
-        profile.properties.put("textures", Property("textures", String(encodeData)))
+        val profile = getProfile(skullUrl)
+        val meta = item.itemMeta as SkullMeta
+        meta.playerProfile = profile
+        item.itemMeta = meta
 
-        val profileField: Field = itemMeta.javaClass.getDeclaredField("profile")
-        profileField.isAccessible = true
-        profileField.set(itemMeta, profile)
-
-        item.itemMeta = itemMeta
         return modifyItem(item, title, *lore)
 
     }
