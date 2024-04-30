@@ -5,7 +5,6 @@ import dev.meluhdy.melodia.annotations.RequirePerm
 import dev.meluhdy.melodia.annotations.UserOnly
 import dev.meluhdy.melodia.utils.ChatUtils
 import org.bukkit.command.Command
-import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import java.lang.reflect.Method
@@ -16,7 +15,7 @@ import kotlin.reflect.KClass
  *
  * @param command The name of the command or sub-command
  */
-abstract class MelodiaCommand(var command: String) : CommandExecutor {
+abstract class MelodiaCommand(var command: String) : Command(command) {
 
     /**
      * List of commands that are sub-commands of this one
@@ -28,7 +27,7 @@ abstract class MelodiaCommand(var command: String) : CommandExecutor {
     }
 
     private fun checkAnnotations(sender: CommandSender) : Boolean {
-        val safeCommandMethod = this::class.java.getDeclaredMethod("safeCommand", CommandSender::class.java, Command::class.java, String::class.java, Array<String>::class.java)
+        val safeCommandMethod = this::class.java.getDeclaredMethod("safeCommand", CommandSender::class.java, String::class.java, Array<String>::class.java)
         for (annotation in safeCommandMethod.annotations) {
             when (annotation) {
                 is UserOnly -> {
@@ -53,13 +52,13 @@ abstract class MelodiaCommand(var command: String) : CommandExecutor {
         return true
     }
 
-    override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
+    override fun execute(sender: CommandSender,label: String, args: Array<String>): Boolean {
         if (args.isNotEmpty())
             for (subCommand in subCommands)
                 if (subCommand.command == args[0])
-                    return subCommand.onCommand(sender, command, label, args.copyOfRange(1, args.size))
+                    return subCommand.execute(sender, label, args.copyOfRange(1, args.size))
         if (!checkAnnotations(sender)) return false
-        return safeCommand(sender, command, label, args)
+        return safeCommand(sender, label, args)
     }
 
     /**
@@ -72,6 +71,6 @@ abstract class MelodiaCommand(var command: String) : CommandExecutor {
      *
      * @return Whether the command encountered an error or not
      */
-    abstract fun safeCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean
+    abstract fun safeCommand(sender: CommandSender, label: String, args: Array<String>): Boolean
 
 }

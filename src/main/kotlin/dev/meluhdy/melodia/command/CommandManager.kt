@@ -1,6 +1,7 @@
 package dev.meluhdy.melodia.command
 
 import dev.meluhdy.melodia.pluginInstance
+import org.bukkit.Bukkit
 
 object CommandManager {
 
@@ -33,7 +34,7 @@ object CommandManager {
 
     fun registerCommands() {
         for (command in commandList) {
-            pluginInstance.getCommand(command.command)!!.setExecutor(command)
+            Bukkit.getCommandMap().register(command.command, command)
         }
     }
 
