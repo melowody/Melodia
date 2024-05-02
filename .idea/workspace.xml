@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bbf93a59-7a32-4f63-9c3a-2e93f8035e8b" name="Changes" comment="Fixed how commands work">
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="bbf93a59-7a32-4f63-9c3a-2e93f8035e8b" name="Changes" comment="Add Tab Completion">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/command/CommandManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/command/CommandManager.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/command/MelodiaCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/command/MelodiaCommand.kt" afterDir="false" />
     </list>
@@ -99,28 +98,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Gradle.Melodia [jar].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Melodia [shadowJar].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.Melodia [jar].executor": "Run",
+    "Gradle.Melodia [shadowJar].executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;kotlin-gradle-user-dirs&quot;: [
-      &quot;C:\\Users\\melod\\.gradle&quot;
+  "keyToStringList": {
+    "kotlin-gradle-user-dirs": [
+      "C:\\Users\\melod\\.gradle"
     ]
   }
-}</component>
-  <component name="RunManager" selected="Gradle.Melodia [jar]">
+}]]></component>
+  <component name="RunManager" selected="Gradle.Melodia [shadowJar]">
     <configuration name="Melodia [jar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -167,16 +167,16 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.Melodia [jar]" />
         <item itemvalue="Gradle.Melodia [shadowJar]" />
+        <item itemvalue="Gradle.Melodia [jar]" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.15989.69" />
-        <option value="bundled-js-predefined-1d06a55b98c1-2e7d6887c066-JavaScript-IU-241.15989.69" />
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.15989.150" />
+        <option value="bundled-js-predefined-1d06a55b98c1-91d5c284f522-JavaScript-IU-241.15989.150" />
       </set>
     </attachedChunks>
   </component>
@@ -199,7 +199,17 @@
       <workItem from="1714434513181" duration="1943000" />
       <workItem from="1714436764791" duration="16000" />
       <workItem from="1714436861204" duration="597000" />
-      <workItem from="1714438188895" duration="12000" />
+      <workItem from="1714438188895" duration="548000" />
+      <workItem from="1714452750965" duration="787000" />
+      <workItem from="1714453787611" duration="505000" />
+      <workItem from="1714454559009" duration="40000" />
+      <workItem from="1714595391687" duration="235000" />
+      <workItem from="1714595990522" duration="54000" />
+      <workItem from="1714597702913" duration="649000" />
+      <workItem from="1714600411581" duration="68000" />
+      <workItem from="1714600526961" duration="244000" />
+      <workItem from="1714652833389" duration="385000" />
+      <workItem from="1714656844529" duration="83000" />
     </task>
     <task id="LOCAL-00001" summary="Big overhaul of the plugin, mainly adding comments for the API but also changing a few things too">
       <option name="closed" value="true" />
@@ -233,7 +243,23 @@
       <option name="project" value="LOCAL" />
       <updated>1712722434191</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Fixed how commands work">
+      <option name="closed" value="true" />
+      <created>1714438206387</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1714438206387</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Fixed Skull Utils">
+      <option name="closed" value="true" />
+      <created>1714454584701</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1714454584701</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -245,6 +271,8 @@
     <MESSAGE value="Add comments to the event utils lol" />
     <MESSAGE value="Add an easier way to register listeners" />
     <MESSAGE value="Fixed how commands work" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed how commands work" />
+    <MESSAGE value="Fixed Skull Utils" />
+    <MESSAGE value="Add Tab Completion" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add Tab Completion" />
   </component>
 </project>

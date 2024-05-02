@@ -35,6 +35,7 @@ object CommandManager {
     fun registerCommands() {
         for (command in commandList) {
             Bukkit.getCommandMap().register(command.command, command)
+            pluginInstance.getCommand(command.command)!!.tabCompleter = command
         }
     }
 

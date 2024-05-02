@@ -6,6 +6,7 @@ import dev.meluhdy.melodia.annotations.UserOnly
 import dev.meluhdy.melodia.utils.ChatUtils
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
+import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
 import java.lang.reflect.Method
 import kotlin.reflect.KClass
@@ -15,7 +16,7 @@ import kotlin.reflect.KClass
  *
  * @param command The name of the command or sub-command
  */
-abstract class MelodiaCommand(var command: String) : Command(command) {
+abstract class MelodiaCommand(var command: String) : Command(command), TabCompleter {
 
     /**
      * List of commands that are sub-commands of this one
@@ -65,7 +66,6 @@ abstract class MelodiaCommand(var command: String) : Command(command) {
      * The logic for the command
      *
      * @param sender The entity that triggered the command
-     * @param command The command itself
      * @param label I do not know
      * @param args The arguments for the command
      *
