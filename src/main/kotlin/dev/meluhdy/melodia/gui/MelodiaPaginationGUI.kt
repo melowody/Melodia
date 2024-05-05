@@ -13,7 +13,7 @@ import org.bukkit.inventory.ItemStack
  * @param itemRows
  */
 @Suppress("unused")
-abstract class MelodiaPaginationGUI<T>(private val rows: Int, title: String, p: Player, private val prevGUI: MelodiaGUI?, private val itemRows: Int): MelodiaGUI(rows, title, p) {
+abstract class MelodiaPaginationGUI<T>(rows: Int, title: String, p: Player, val prevGUI: MelodiaGUI?, val itemRows: Int): MelodiaGUI(rows, title, p) {
 
     private var page = 0
 

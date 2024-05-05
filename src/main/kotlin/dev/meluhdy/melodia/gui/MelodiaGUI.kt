@@ -15,7 +15,7 @@ import org.bukkit.inventory.ItemStack
 /**
  * A GUI wrapper class to make creating GUIs much easier
  */
-abstract class MelodiaGUI(rows: Int, title: String, protected val p: Player) : Listener {
+abstract class MelodiaGUI(val rows: Int, val title: String, protected val p: Player) : Listener {
 
     @SuppressWarnings("WeakerAccess")
     protected val inv: Inventory = Bukkit.createInventory(null, rows * 9, ChatUtils.colorize(title))
