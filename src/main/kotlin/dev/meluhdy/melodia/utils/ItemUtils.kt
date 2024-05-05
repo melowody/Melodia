@@ -47,12 +47,7 @@ object ItemUtils {
         val itemMeta = item.itemMeta
         if (title != null)
             itemMeta.displayName(ChatUtils.colorize(title))
-        itemMeta.lore(
-            lore.toList()
-                .stream()
-                .map(ChatUtils::colorize)
-                .collect(Collectors.toList())
-        )
+        itemMeta.lore(lore.map(ChatUtils::colorize))
         item.itemMeta = itemMeta
         return item
     }
