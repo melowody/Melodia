@@ -34,8 +34,9 @@ object CommandManager {
 
     fun registerCommands() {
         for (command in commandList) {
-            Bukkit.getCommandMap().register(command.command, command)
-            pluginInstance.getCommand(command.command)!!.tabCompleter = command
+            val pluginCommand = pluginInstance.getCommand(command.command) ?: throw IllegalArgumentException("Could not find command ${command.command}. Make sure it's in your plugin.yml!")
+            pluginCommand.setExecutor(command)
+            pluginCommand.tabCompleter = command
         }
     }
 

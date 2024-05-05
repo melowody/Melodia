@@ -5,6 +5,7 @@ import dev.meluhdy.melodia.annotations.RequirePerm
 import dev.meluhdy.melodia.annotations.UserOnly
 import dev.meluhdy.melodia.utils.ChatUtils
 import org.bukkit.command.Command
+import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
@@ -16,7 +17,7 @@ import kotlin.reflect.KClass
  *
  * @param command The name of the command or sub-command
  */
-abstract class MelodiaCommand(var command: String) : Command(command), TabCompleter {
+abstract class MelodiaCommand(var command: String) : CommandExecutor, TabCompleter {
 
     /**
      * List of commands that are sub-commands of this one
@@ -53,11 +54,11 @@ abstract class MelodiaCommand(var command: String) : Command(command), TabComple
         return true
     }
 
-    override fun execute(sender: CommandSender,label: String, args: Array<String>): Boolean {
-        if (args.isNotEmpty())
+    override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>?): Boolean {
+        if (!args.isNullOrEmpty())
             for (subCommand in subCommands)
                 if (subCommand.command == args[0])
-                    return subCommand.execute(sender, label, args.copyOfRange(1, args.size))
+                    return subCommand.onCommand(sender, command, label, args.copyOfRange(1, args.size))
         if (!checkAnnotations(sender)) return false
         return safeCommand(sender, label, args)
     }
@@ -71,6 +72,6 @@ abstract class MelodiaCommand(var command: String) : Command(command), TabComple
      *
      * @return Whether the command encountered an error or not
      */
-    abstract fun safeCommand(sender: CommandSender, label: String, args: Array<String>): Boolean
+    abstract fun safeCommand(sender: CommandSender, label: String, args: Array<String>?): Boolean
 
 }
