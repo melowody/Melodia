@@ -36,13 +36,15 @@ abstract class MelodiaPaginationGUI<T>(rows: Int, title: String, p: Player, val 
      */
     abstract val objects: ArrayList<T>
 
+    val objectsOnPage: List<T>
+        get() = objects.subList(page * this.itemRows * 9, ((page + 1) * this.itemRows * 9).coerceAtMost(objects.size))
+
     override val melodiaItems: ArrayList<MelodiaGUIItem>
         get() {
 
-        val amount = this.itemRows * 9
         val list: ArrayList<MelodiaGUIItem> = arrayListOf()
 
-        for ((p, i) in objects.subList(page * amount, ((page + 1) * amount).coerceAtMost(objects.size)).withIndex()) {
+        for ((p, i) in objectsOnPage.withIndex()) {
             list.add(toItem(p, i))
         }
 
@@ -60,7 +62,7 @@ abstract class MelodiaPaginationGUI<T>(rows: Int, title: String, p: Player, val 
                 this.initializeItems()
             })
 
-        if ((page + 1) * amount < objects.size)
+        if ((page + 1) * this.itemRows * 9 < objects.size)
             list.add(MelodiaGUIItem(
                 rows * 9 - 1,
                 nextItem
