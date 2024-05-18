@@ -1,5 +1,6 @@
 package dev.meluhdy.melodia.gui
 
+import dev.meluhdy.melodia.MelodiaPlugin
 import dev.meluhdy.melodia.utils.ChatUtils
 import org.bukkit.Bukkit
 import org.bukkit.Material
@@ -18,10 +19,14 @@ import org.bukkit.inventory.ItemStack
  * @param title The title of the GUI (e.g. "&8Main Menu").
  * @param p The player to open the GUI for.
  */
-abstract class MelodiaGUI(val rows: Int, val title: String, protected val p: Player) : Listener {
+abstract class MelodiaGUI(plugin: MelodiaPlugin, val rows: Int, val title: String, protected val p: Player) : Listener {
 
     @SuppressWarnings("WeakerAccess")
     val inv: Inventory = Bukkit.createInventory(null, rows * 9, ChatUtils.colorize(title))
+
+    init {
+        Bukkit.getPluginManager().registerEvents(this, plugin)
+    }
 
     /**
      * The function to generate the items to be shown in the inventory.

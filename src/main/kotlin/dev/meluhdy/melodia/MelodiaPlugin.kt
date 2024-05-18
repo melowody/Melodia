@@ -22,11 +22,6 @@ abstract class MelodiaPlugin : JavaPlugin() {
      */
     abstract val listeners: ArrayList<out Listener>
 
-    /**
-     * The list of GUIs for the plugin to register.
-     */
-    abstract val guis: ArrayList<out MelodiaGUI>
-
     override fun onEnable() {
         onPluginEnable()
 
@@ -36,7 +31,6 @@ abstract class MelodiaPlugin : JavaPlugin() {
         CommandManager.registerCommands(this)
 
         listeners.forEach { listener -> Bukkit.getPluginManager().registerEvents(listener, this) }
-        guis.forEach { gui -> Bukkit.getPluginManager().registerEvents(gui, this) }
     }
 
     /**
