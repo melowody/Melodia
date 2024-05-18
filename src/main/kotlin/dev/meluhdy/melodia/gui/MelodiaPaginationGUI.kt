@@ -79,6 +79,8 @@ abstract class MelodiaPaginationGUI<T>(plugin: MelodiaPlugin, rows: Int, title: 
                 this.initializeItems()
             })
 
+        list.addAll(extraMelodiaGUIItems)
+
         return list
 
     }
