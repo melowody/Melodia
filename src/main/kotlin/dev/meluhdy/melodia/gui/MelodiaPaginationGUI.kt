@@ -1,5 +1,6 @@
 package dev.meluhdy.melodia.gui
 
+import dev.meluhdy.melodia.MelodiaPlugin
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
@@ -13,7 +14,7 @@ import org.bukkit.inventory.ItemStack
  * @param itemRows The amount of rows for the items from the top.
  */
 @Suppress("unused")
-abstract class MelodiaPaginationGUI<T>(rows: Int, title: String, p: Player, val prevGUI: MelodiaGUI?, val itemRows: Int): MelodiaGUI(rows, title, p) {
+abstract class MelodiaPaginationGUI<T>(plugin: MelodiaPlugin, rows: Int, title: String, p: Player, val prevGUI: MelodiaGUI?, val itemRows: Int): MelodiaGUI(plugin, rows, title, p) {
 
     private var page = 0
 
