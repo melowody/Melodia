@@ -2,7 +2,6 @@ package dev.meluhdy.melodia
 
 import dev.meluhdy.melodia.command.CommandManager
 import dev.meluhdy.melodia.command.MelodiaCommand
-import dev.meluhdy.melodia.gui.MelodiaGUI
 import org.bukkit.Bukkit
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin

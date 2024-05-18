@@ -14,10 +14,13 @@ import kotlin.reflect.KClass
 
 /**
  * Wrapper class for Commands to make them easier to deal with.
- *
- * @param command The name of the command or sub-command.
  */
-abstract class MelodiaCommand(var command: String) : CommandExecutor, TabCompleter {
+abstract class MelodiaCommand : CommandExecutor, TabCompleter {
+
+    /**
+     * The name of the command or sub-command. e.g. "home" for /home
+     */
+    abstract val command: String
 
     /**
      * List of commands that are sub-commands of this one,

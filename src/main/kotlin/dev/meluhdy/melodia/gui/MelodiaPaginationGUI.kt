@@ -1,20 +1,25 @@
 package dev.meluhdy.melodia.gui
 
-import dev.meluhdy.melodia.MelodiaPlugin
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
 /**
  * The base for a Pagination GUI, Scoville-style.
  *
- * @param rows The amount of rows for the GUI in total.
- * @param title The title of the GUI.
  * @param p The player the GUI is paired with.
- * @param prevGUI The previous GUI the player was on.
- * @param itemRows The amount of rows for the items from the top.
  */
 @Suppress("unused")
-abstract class MelodiaPaginationGUI<T>(plugin: MelodiaPlugin, rows: Int, title: String, p: Player, val prevGUI: MelodiaGUI?, val itemRows: Int): MelodiaGUI(plugin, rows, title, p) {
+abstract class MelodiaPaginationGUI<T>(p: Player): MelodiaGUI(p) {
+
+    /**
+     * The previous GUI the player was on.
+     */
+    abstract val prevGUI: MelodiaGUI?
+
+    /**
+     * The amount of rows for the paginated items to appear in.
+     */
+    abstract val itemRows: Int
 
     private var page = 0
 
@@ -40,7 +45,7 @@ abstract class MelodiaPaginationGUI<T>(plugin: MelodiaPlugin, rows: Int, title: 
     /**
      * The list of all objects on the current page.
      */
-    val objectsOnPage: List<T>
+    protected val objectsOnPage: List<T>
         get() = objects.subList(page * this.itemRows * 9, ((page + 1) * this.itemRows * 9).coerceAtMost(objects.size))
 
     /**

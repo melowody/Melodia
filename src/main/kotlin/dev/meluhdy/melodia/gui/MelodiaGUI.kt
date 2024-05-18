@@ -1,6 +1,6 @@
 package dev.meluhdy.melodia.gui
 
-import dev.meluhdy.melodia.MelodiaPlugin
+import dev.meluhdy.melodia.melodiaInstance
 import dev.meluhdy.melodia.utils.ChatUtils
 import org.bukkit.Bukkit
 import org.bukkit.Material
@@ -15,17 +15,25 @@ import org.bukkit.inventory.ItemStack
 /**
  * A GUI wrapper class to make creating GUIs much easier.
  *
- * @param rows The amount of rows for the GUI to have.
- * @param title The title of the GUI (e.g. "&8Main Menu").
  * @param p The player to open the GUI for.
  */
-abstract class MelodiaGUI(plugin: MelodiaPlugin, val rows: Int, val title: String, protected val p: Player) : Listener {
+abstract class MelodiaGUI(protected val p: Player) : Listener {
+
+    /**
+     * The amount of rows for the GUI to have.
+     */
+    abstract val rows: Int
+
+    /**
+     * The title of the GUI (e.g. "&8Main Menu").
+     */
+    abstract val title: String
 
     @SuppressWarnings("WeakerAccess")
     val inv: Inventory = Bukkit.createInventory(null, rows * 9, ChatUtils.colorize(title))
 
     init {
-        Bukkit.getPluginManager().registerEvents(this, plugin)
+        Bukkit.getPluginManager().registerEvents(this, melodiaInstance)
     }
 
     /**

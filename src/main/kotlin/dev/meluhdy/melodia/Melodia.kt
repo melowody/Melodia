@@ -5,7 +5,6 @@ import org.bukkit.plugin.java.JavaPlugin
 
 internal lateinit var melodiaInstance: Melodia
 
-@Suppress("unused")
 class Melodia : JavaPlugin() {
 
     override fun onEnable() {

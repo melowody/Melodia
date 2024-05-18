@@ -4,10 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bbf93a59-7a32-4f63-9c3a-2e93f8035e8b" name="Changes" comment="Added more documentation, to everything">
+    <list default="true" id="bbf93a59-7a32-4f63-9c3a-2e93f8035e8b" name="Changes" comment="OK I'M VERY STUPID">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/Melodia.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/Melodia.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/MelodiaPlugin.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/MelodiaPlugin.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/command/MelodiaCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/command/MelodiaCommand.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/gui/MelodiaGUI.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/gui/MelodiaGUI.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/gui/MelodiaPaginationGUI.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/gui/MelodiaPaginationGUI.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,7 +124,7 @@
     ]
   }
 }</component>
-  <component name="RunManager" selected="Gradle.Melodia [shadowJar]">
+  <component name="RunManager" selected="Gradle.Melodia [jar]">
     <configuration name="Melodia [jar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -168,8 +171,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.Melodia [shadowJar]" />
         <item itemvalue="Gradle.Melodia [jar]" />
+        <item itemvalue="Gradle.Melodia [shadowJar]" />
       </list>
     </recent_temporary>
   </component>
@@ -253,7 +256,12 @@
       <workItem from="1715802628791" duration="1512000" />
       <workItem from="1715804335522" duration="191000" />
       <workItem from="1715997701482" duration="2743000" />
-      <workItem from="1716000509656" duration="96000" />
+      <workItem from="1716000509656" duration="837000" />
+      <workItem from="1716001413924" duration="26000" />
+      <workItem from="1716001451719" duration="1269000" />
+      <workItem from="1716004325133" duration="124000" />
+      <workItem from="1716004674825" duration="56000" />
+      <workItem from="1716004800050" duration="400000" />
     </task>
     <task id="LOCAL-00001" summary="Big overhaul of the plugin, mainly adding comments for the API but also changing a few things too">
       <option name="closed" value="true" />
@@ -383,7 +391,31 @@
       <option name="project" value="LOCAL" />
       <updated>1716000430197</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="あ。。えと。。Blehhhh &gt;///~///&lt;">
+      <option name="closed" value="true" />
+      <created>1716000693051</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1716000693051</updated>
+    </task>
+    <task id="LOCAL-00018" summary="I MIGHT BE A LITTLE STUPID OK">
+      <option name="closed" value="true" />
+      <created>1716001434200</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1716001434200</updated>
+    </task>
+    <task id="LOCAL-00019" summary="OK I'M VERY STUPID">
+      <option name="closed" value="true" />
+      <created>1716004724707</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1716004724707</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -406,6 +438,9 @@
     <MESSAGE value="Add UUID Utils with name caching" />
     <MESSAGE value="Idk lol" />
     <MESSAGE value="Added more documentation, to everything" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added more documentation, to everything" />
+    <MESSAGE value="あ。。えと。。Blehhhh &gt;///~///&lt;" />
+    <MESSAGE value="I MIGHT BE A LITTLE STUPID OK" />
+    <MESSAGE value="OK I'M VERY STUPID" />
+    <option name="LAST_COMMIT_MESSAGE" value="OK I'M VERY STUPID" />
   </component>
 </project>
