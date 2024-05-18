@@ -7,14 +7,10 @@ import org.bukkit.inventory.ItemStack
  * The base for a Pagination GUI, Scoville-style.
  *
  * @param p The player the GUI is paired with.
+ * @param prevGUI The previous GUI the player was on.
  */
 @Suppress("unused")
-abstract class MelodiaPaginationGUI<T>(p: Player): MelodiaGUI(p) {
-
-    /**
-     * The previous GUI the player was on.
-     */
-    abstract val prevGUI: MelodiaGUI?
+abstract class MelodiaPaginationGUI<T>(p: Player, val prevGUI: MelodiaGUI?): MelodiaGUI(p) {
 
     /**
      * The amount of rows for the paginated items to appear in.
