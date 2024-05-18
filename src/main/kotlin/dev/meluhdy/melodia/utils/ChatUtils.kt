@@ -11,10 +11,10 @@ object ChatUtils {
     /**
      * Colors a string using the legacy color codes.
      *
-     * @param message The message to colorize
+     * @param message The message to colorize.
      * @param identifier The identifier for the color codes. Default: &
      *
-     * @return A TextComponent colored using the inputted color codes
+     * @return A TextComponent colored using the inputted color codes.
      */
     fun colorize(message: String, identifier: Char = '&'): TextComponent {
         return LegacyComponentSerializer.legacy(identifier).deserialize(message)

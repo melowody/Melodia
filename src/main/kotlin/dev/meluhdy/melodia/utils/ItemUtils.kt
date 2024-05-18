@@ -8,10 +8,9 @@ import org.bukkit.inventory.meta.SkullMeta
 import java.net.MalformedURLException
 import java.net.URL
 import java.util.UUID
-import java.util.stream.Collectors
 
 /**
- * A collection of utils for modifying and creating ItemStacks
+ * A collection of utils for modifying and creating ItemStacks.
  */
 @Suppress("unused")
 object ItemUtils {
@@ -33,11 +32,11 @@ object ItemUtils {
     /**
      * Modifies an existing Item to add different lore and a different name.
      *
-     * @param item The ItemStack to modify
-     * @param title The new title to give it
-     * @param lore The new lore to give it, by lines
+     * @param item The ItemStack to modify.
+     * @param title The new title to give it.
+     * @param lore The new lore to give it, by lines.
      *
-     * @return The modified ItemStack
+     * @return The modified ItemStack.
      */
     private fun modifyItem(
         item: ItemStack,
@@ -55,12 +54,12 @@ object ItemUtils {
     /**
      * Creates an ItemStack with custom lore and a title from scratch.
      *
-     * @param mat The Material for the ItemStack
-     * @param count The amount in the ItemStack
-     * @param title The title of the ItemStack
-     * @param lore The lore of the ItemStack
+     * @param mat The Material for the ItemStack.
+     * @param count The amount in the ItemStack.
+     * @param title The title of the ItemStack.
+     * @param lore The lore of the ItemStack.
      *
-     * @return The custom generated ItemStack
+     * @return The custom generated ItemStack.
      */
     @Suppress("unused")
     fun createItem(
@@ -73,12 +72,12 @@ object ItemUtils {
     /**
      * Creates a custom skull given a skin URL.
      *
-     * @param skullUrl The URL for the skin to pull the skull from
-     * @param count The amount in the ItemStack
-     * @param title The title of the ItemStack
-     * @param lore The lore of the ItemStack
+     * @param skullUrl The URL for the skin to pull the skull from.
+     * @param count The amount in the ItemStack.
+     * @param title The title of the ItemStack.
+     * @param lore The lore of the ItemStack.
      *
-     * @return The custom generated skull
+     * @return The custom generated skull.
      */
     @Suppress("unused")
     fun createSkull(
@@ -103,12 +102,12 @@ object ItemUtils {
     /**
      * Creates a custom skull given a player UUID.
      *
-     * @param player The UUID of the player to steal the skull of
-     * @param count The amount in the ItemStack
-     * @param title The title of the ItemStack
-     * @param lore The lore of the ItemStack
+     * @param player The UUID of the player to steal the skull of.
+     * @param count The amount in the ItemStack.
+     * @param title The title of the ItemStack.
+     * @param lore The lore of the ItemStack.
      *
-     * @return The custom generated skull
+     * @return The custom generated skull.
      */
     @Suppress("unused")
     fun createSkull(

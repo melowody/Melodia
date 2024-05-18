@@ -13,21 +13,39 @@ import java.lang.reflect.Method
 import kotlin.reflect.KClass
 
 /**
- * Wrapper class for Commands to make them easier to deal with
+ * Wrapper class for Commands to make them easier to deal with.
  *
- * @param command The name of the command or sub-command
+ * @param command The name of the command or sub-command.
  */
 abstract class MelodiaCommand(var command: String) : CommandExecutor, TabCompleter {
 
     /**
-     * List of commands that are sub-commands of this one
+     * List of commands that are sub-commands of this one,
+     * e.g. If you have a MelodiaCommand GuiCommand("gui") that lists the guis,
+     * and you have a MelodiaCommand MainGuiCommand("main") that opens the MainGui upon /gui main,
+     * then in GuiCommand you would add MainGuiCommand here.
      */
     abstract val subCommands: ArrayList<MelodiaCommand>
 
+    /**
+     * Checks if a command has an annotation.
+     *
+     * @param method The function to check for the annotation.
+     * @param clazz The annotation to check for.
+     *
+     * @return True if the annotation is found, else false.
+     */
     private fun hasAnnotation(method: Method, clazz: KClass<out Annotation>) : Boolean {
         return method.isAnnotationPresent(clazz.java)
     }
 
+    /**
+     * Checks if a command has any of the command-specific annotations and returns if their conditions are met.
+     *
+     * @param sender The sender of the command.
+     *
+     * @return True if the conditions of the given annotations are met, false otherwise.
+     */
     private fun checkAnnotations(sender: CommandSender) : Boolean {
         val safeCommandMethod = this::class.java.getDeclaredMethod("safeCommand", CommandSender::class.java, String::class.java, Array<String>::class.java)
         for (annotation in safeCommandMethod.annotations) {
@@ -64,13 +82,13 @@ abstract class MelodiaCommand(var command: String) : CommandExecutor, TabComplet
     }
 
     /**
-     * The logic for the command
+     * The logic for the command.
      *
-     * @param sender The entity that triggered the command
-     * @param label I do not know
-     * @param args The arguments for the command
+     * @param sender The entity that triggered the command.
+     * @param label Which label the command used in the case of aliases (e.g. "h" if the player entered /h instead of /home).
+     * @param args The arguments for the command.
      *
-     * @return Whether the command encountered an error or not
+     * @return Whether the command encountered an error or not.
      */
     abstract fun safeCommand(sender: CommandSender, label: String, args: Array<String>?): Boolean
 

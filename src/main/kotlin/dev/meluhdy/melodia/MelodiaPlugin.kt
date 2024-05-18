@@ -2,16 +2,12 @@ package dev.meluhdy.melodia
 
 import dev.meluhdy.melodia.command.CommandManager
 import dev.meluhdy.melodia.command.MelodiaCommand
+import dev.meluhdy.melodia.gui.MelodiaGUI
 import org.bukkit.Bukkit
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
 
-internal lateinit var pluginInstance: MelodiaPlugin
-    private set
-
 /**
- * Please inherit this as an object.
- *
  * The base of the plugin, modified to be able to handle MelodiaCommands well.
  */
 abstract class MelodiaPlugin : JavaPlugin() {
@@ -26,18 +22,21 @@ abstract class MelodiaPlugin : JavaPlugin() {
      */
     abstract val listeners: ArrayList<out Listener>
 
+    /**
+     * The list of GUIs for the plugin to register.
+     */
+    abstract val guis: ArrayList<out MelodiaGUI>
+
     override fun onEnable() {
-        pluginInstance = this
         onPluginEnable()
 
-        for (command in commands) {
-            CommandManager.addCommand(command)
-        }
-        CommandManager.registerCommands()
+        dataFolder.mkdir()
 
-        for (listener in listeners) {
-            Bukkit.getPluginManager().registerEvents(listener, this)
-        }
+        commands.forEach { command -> CommandManager.addCommand(command) }
+        CommandManager.registerCommands(this)
+
+        listeners.forEach { listener -> Bukkit.getPluginManager().registerEvents(listener, this) }
+        guis.forEach { gui -> Bukkit.getPluginManager().registerEvents(gui, this) }
     }
 
     /**

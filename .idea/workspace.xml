@@ -4,9 +4,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bbf93a59-7a32-4f63-9c3a-2e93f8035e8b" name="Changes" comment="Add UUID Utils with name caching">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="bbf93a59-7a32-4f63-9c3a-2e93f8035e8b" name="Changes" comment="Idk lol">
+      <change beforePath="$PROJECT_DIR$/.idea/kotlinc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/Melodia.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/Melodia.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/MelodiaPlugin.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/MelodiaPlugin.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/annotations/MissingAnnotationException.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/annotations/MissingAnnotationException.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/annotations/RequirePerm.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/annotations/RequirePerm.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/annotations/UserOnly.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/annotations/UserOnly.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/command/CommandManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/command/CommandManager.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/command/MelodiaCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/command/MelodiaCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/gui/MelodiaGUI.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/gui/MelodiaGUI.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/gui/MelodiaGUIItem.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/gui/MelodiaGUIItem.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/gui/MelodiaPaginationGUI.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/gui/MelodiaPaginationGUI.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/manager/MelodiaManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/manager/MelodiaManager.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/manager/MelodiaObject.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/manager/MelodiaObject.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/manager/MelodiaSavableManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/manager/MelodiaSavableManager.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/utils/ChatUtils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/utils/ChatUtils.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/utils/EventUtils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/utils/EventUtils.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/utils/ItemUtils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/utils/ItemUtils.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/utils/UUIDUtils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/utils/UUIDUtils.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -229,7 +247,29 @@
       <workItem from="1715048248211" duration="1470000" />
       <workItem from="1715049750740" duration="2478000" />
       <workItem from="1715110719684" duration="4000" />
-      <workItem from="1715110731829" duration="53000" />
+      <workItem from="1715110731829" duration="66000" />
+      <workItem from="1715110802614" duration="90000" />
+      <workItem from="1715122082267" duration="2000" />
+      <workItem from="1715122210621" duration="16000" />
+      <workItem from="1715180884135" duration="15000" />
+      <workItem from="1715180987357" duration="31000" />
+      <workItem from="1715182151742" duration="1345000" />
+      <workItem from="1715184433327" duration="171000" />
+      <workItem from="1715184662969" duration="152000" />
+      <workItem from="1715184939074" duration="167000" />
+      <workItem from="1715185591523" duration="7000" />
+      <workItem from="1715185636032" duration="64000" />
+      <workItem from="1715663527031" duration="1220000" />
+      <workItem from="1715800390281" duration="379000" />
+      <workItem from="1715801024495" duration="166000" />
+      <workItem from="1715801199094" duration="111000" />
+      <workItem from="1715801375709" duration="55000" />
+      <workItem from="1715801516863" duration="260000" />
+      <workItem from="1715801806076" duration="16000" />
+      <workItem from="1715801964113" duration="148000" />
+      <workItem from="1715802628791" duration="1512000" />
+      <workItem from="1715804335522" duration="191000" />
+      <workItem from="1715997701482" duration="2662000" />
     </task>
     <task id="LOCAL-00001" summary="Big overhaul of the plugin, mainly adding comments for the API but also changing a few things too">
       <option name="closed" value="true" />
@@ -343,7 +383,15 @@
       <option name="project" value="LOCAL" />
       <updated>1715110764244</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Idk lol">
+      <option name="closed" value="true" />
+      <created>1715110790040</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1715110790040</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -364,6 +412,7 @@
     <MESSAGE value="Simplify item lore logic" />
     <MESSAGE value="Add an abstract manager for general objects" />
     <MESSAGE value="Add UUID Utils with name caching" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add UUID Utils with name caching" />
+    <MESSAGE value="Idk lol" />
+    <option name="LAST_COMMIT_MESSAGE" value="Idk lol" />
   </component>
 </project>
