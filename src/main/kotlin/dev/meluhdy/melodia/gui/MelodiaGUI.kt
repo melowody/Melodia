@@ -29,8 +29,13 @@ abstract class MelodiaGUI(protected val p: Player) : Listener {
      */
     abstract val title: String
 
-    @SuppressWarnings("WeakerAccess")
-    val inv: Inventory = Bukkit.createInventory(null, rows * 9, ChatUtils.colorize(title))
+    private var _inv: Inventory? = null
+
+    val inv: Inventory
+        get() = run {
+            if (_inv == null) { _inv = Bukkit.createInventory(null, rows * 9, ChatUtils.colorize(title)) }
+            _inv!!
+        }
 
     init {
         Bukkit.getPluginManager().registerEvents(this, melodiaInstance)

@@ -17,6 +17,9 @@ abstract class MelodiaPaginationGUI<T>(p: Player, val prevGUI: MelodiaGUI?): Mel
      */
     abstract val itemRows: Int
 
+    /**
+     * The current page of the pagination GUI.
+     */
     private var page = 0
 
     /**
