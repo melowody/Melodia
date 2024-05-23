@@ -4,13 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bbf93a59-7a32-4f63-9c3a-2e93f8035e8b" name="Changes" comment="OK I'M VERY STUPID">
+    <list default="true" id="bbf93a59-7a32-4f63-9c3a-2e93f8035e8b" name="Changes" comment="Fixed up the GUI system to (semi jankly) work with the abstract fields instead of parameters">
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/manager/MelodiaM2MSavableManager.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/utils/ConsoleUtils.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/utils/EntityUtils.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/utils/uuid/UUIDNameConverter.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/utils/uuid/UUIDNameSerializer.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/Melodia.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/Melodia.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/MelodiaPlugin.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/MelodiaPlugin.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/command/MelodiaCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/command/MelodiaCommand.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/gui/MelodiaGUI.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/gui/MelodiaGUI.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/gui/MelodiaPaginationGUI.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/gui/MelodiaPaginationGUI.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/utils/UUIDUtils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/utils/uuid/UUIDManager.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,8 +75,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Kotlin Object" />
         <option value="Kotlin Class" />
+        <option value="Kotlin Object" />
       </list>
     </option>
   </component>
@@ -115,7 +117,7 @@
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
   &quot;keyToStringList&quot;: {
@@ -124,7 +126,12 @@
     ]
   }
 }</component>
-  <component name="RunManager" selected="Gradle.Melodia [jar]">
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="H:\My Projects\Programs\Minecraft\Melodia\src\main\kotlin\dev\meluhdy\melodia\utils\uuid" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Gradle.Melodia [shadowJar]">
     <configuration name="Melodia [jar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -171,8 +178,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.Melodia [jar]" />
         <item itemvalue="Gradle.Melodia [shadowJar]" />
+        <item itemvalue="Gradle.Melodia [jar]" />
       </list>
     </recent_temporary>
   </component>
@@ -261,7 +268,20 @@
       <workItem from="1716001451719" duration="1269000" />
       <workItem from="1716004325133" duration="124000" />
       <workItem from="1716004674825" duration="56000" />
-      <workItem from="1716004800050" duration="400000" />
+      <workItem from="1716004800050" duration="456000" />
+      <workItem from="1716005336214" duration="211000" />
+      <workItem from="1716006554774" duration="130000" />
+      <workItem from="1716006786554" duration="1270000" />
+      <workItem from="1716049460401" duration="88000" />
+      <workItem from="1716074530076" duration="267000" />
+      <workItem from="1716339400478" duration="521000" />
+      <workItem from="1716340053660" duration="189000" />
+      <workItem from="1716340305770" duration="538000" />
+      <workItem from="1716340860871" duration="23000" />
+      <workItem from="1716397059402" duration="758000" />
+      <workItem from="1716428521836" duration="897000" />
+      <workItem from="1716429516463" duration="21000" />
+      <workItem from="1716429559978" duration="91000" />
     </task>
     <task id="LOCAL-00001" summary="Big overhaul of the plugin, mainly adding comments for the API but also changing a few things too">
       <option name="closed" value="true" />
@@ -415,7 +435,31 @@
       <option name="project" value="LOCAL" />
       <updated>1716004724707</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Changed up some things because they had no reason to be parameters :P">
+      <option name="closed" value="true" />
+      <created>1716005219031</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1716005219031</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Added back prevGUI to MelodiaPaginationGUI parameters">
+      <option name="closed" value="true" />
+      <created>1716005520651</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1716005520651</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Fixed up the GUI system to (semi jankly) work with the abstract fields instead of parameters">
+      <option name="closed" value="true" />
+      <created>1716340835291</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1716340835291</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -441,6 +485,9 @@
     <MESSAGE value="あ。。えと。。Blehhhh &gt;///~///&lt;" />
     <MESSAGE value="I MIGHT BE A LITTLE STUPID OK" />
     <MESSAGE value="OK I'M VERY STUPID" />
-    <option name="LAST_COMMIT_MESSAGE" value="OK I'M VERY STUPID" />
+    <MESSAGE value="Changed up some things because they had no reason to be parameters :P" />
+    <MESSAGE value="Added back prevGUI to MelodiaPaginationGUI parameters" />
+    <MESSAGE value="Fixed up the GUI system to (semi jankly) work with the abstract fields instead of parameters" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed up the GUI system to (semi jankly) work with the abstract fields instead of parameters" />
   </component>
 </project>
