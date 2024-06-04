@@ -4,15 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bbf93a59-7a32-4f63-9c3a-2e93f8035e8b" name="Changes" comment="Fixed up the GUI system to (semi jankly) work with the abstract fields instead of parameters">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/manager/MelodiaM2MSavableManager.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/utils/ConsoleUtils.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/utils/EntityUtils.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/utils/uuid/UUIDNameConverter.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/utils/uuid/UUIDNameSerializer.kt" afterDir="false" />
+    <list default="true" id="bbf93a59-7a32-4f63-9c3a-2e93f8035e8b" name="Changes" comment="Ported some useful classes over from Scoville">
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/exception/CouldNotSaveException.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/Melodia.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/Melodia.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/utils/UUIDUtils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/utils/uuid/UUIDManager.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/manager/MelodiaM2MSavableManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/manager/MelodiaListSavableManager.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/manager/MelodiaManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/manager/MelodiaManager.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/manager/MelodiaSavableManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/manager/MelodiaSavableManager.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/utils/uuid/UUIDManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/dev/meluhdy/melodia/utils/uuid/UUIDManager.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,8 +73,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Kotlin Class" />
         <option value="Kotlin Object" />
+        <option value="Kotlin Class" />
       </list>
     </option>
   </component>
@@ -281,7 +279,15 @@
       <workItem from="1716397059402" duration="758000" />
       <workItem from="1716428521836" duration="897000" />
       <workItem from="1716429516463" duration="21000" />
-      <workItem from="1716429559978" duration="91000" />
+      <workItem from="1716429559978" duration="413000" />
+      <workItem from="1716480768960" duration="809000" />
+      <workItem from="1716482560105" duration="576000" />
+      <workItem from="1716487248189" duration="581000" />
+      <workItem from="1716487916074" duration="602000" />
+      <workItem from="1716488602182" duration="126000" />
+      <workItem from="1716566378314" duration="718000" />
+      <workItem from="1716774899555" duration="601000" />
+      <workItem from="1717464855713" duration="1012000" />
     </task>
     <task id="LOCAL-00001" summary="Big overhaul of the plugin, mainly adding comments for the API but also changing a few things too">
       <option name="closed" value="true" />
@@ -459,7 +465,15 @@
       <option name="project" value="LOCAL" />
       <updated>1716340835291</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="Ported some useful classes over from Scoville">
+      <option name="closed" value="true" />
+      <created>1716429670605</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1716429670605</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -488,6 +502,7 @@
     <MESSAGE value="Changed up some things because they had no reason to be parameters :P" />
     <MESSAGE value="Added back prevGUI to MelodiaPaginationGUI parameters" />
     <MESSAGE value="Fixed up the GUI system to (semi jankly) work with the abstract fields instead of parameters" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed up the GUI system to (semi jankly) work with the abstract fields instead of parameters" />
+    <MESSAGE value="Ported some useful classes over from Scoville" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ported some useful classes over from Scoville" />
   </component>
 </project>

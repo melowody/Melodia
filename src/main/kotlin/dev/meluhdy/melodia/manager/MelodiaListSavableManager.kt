@@ -1,12 +1,14 @@
 package dev.meluhdy.melodia.manager
 
-import kotlinx.serialization.encodeToString
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.builtins.ListSerializer
 import java.io.File
 import java.nio.file.Path
 
-abstract class MelodiaM2MSavableManager<T : MelodiaObject> : MelodiaSavableManager<T>() {
+abstract class MelodiaListSavableManager<T : MelodiaObject> : MelodiaSavableManager<T>() {
 
     abstract val path: Path
+    abstract val tSerializer: KSerializer<T>
 
     protected val file: File
         get() = run {
@@ -21,11 +23,11 @@ abstract class MelodiaM2MSavableManager<T : MelodiaObject> : MelodiaSavableManag
     override fun saveObject(obj: T) {}
 
     override fun save() {
-        file.writeText(serializer.encodeToString<ArrayList<T>>(getAll()))
+        file.writeText(serializer.encodeToString(ListSerializer(tSerializer), getAll()))
     }
 
     override fun load() {
-        serializer.decodeFromString<ArrayList<T>>(file.readText()).forEach { item ->
+        serializer.decodeFromString(ListSerializer(tSerializer), file.readText()).forEach { item ->
             add(
                 item
             )

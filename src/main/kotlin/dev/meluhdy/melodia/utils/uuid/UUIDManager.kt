@@ -1,7 +1,8 @@
 package dev.meluhdy.melodia.utils.uuid
 
-import dev.meluhdy.melodia.manager.MelodiaM2MSavableManager
+import dev.meluhdy.melodia.manager.MelodiaListSavableManager
 import dev.meluhdy.melodia.melodiaInstance
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
@@ -17,7 +18,7 @@ import kotlin.io.path.Path
 /**
  * Utils dealing with Player UUIDs.
  */
-object UUIDManager : MelodiaM2MSavableManager<UUIDNameConverter>(), Listener {
+object UUIDManager : MelodiaListSavableManager<UUIDNameConverter>(), Listener {
 
     private const val NAME_TO_UUID: String = "https://api.mojang.com/users/profiles/minecraft/%s"
     private const val UUID_TO_NAME: String = "https://api.mojang.com/user/profile/%s"
@@ -102,5 +103,6 @@ object UUIDManager : MelodiaM2MSavableManager<UUIDNameConverter>(), Listener {
 
     override fun saveObject(obj: UUIDNameConverter) {}
     override val path: Path = Path(melodiaInstance.dataFolder.toString(), "uuids.json")
+    override val tSerializer: KSerializer<UUIDNameConverter> = UUIDNameConverterSerializer
 
 }

@@ -80,4 +80,52 @@ abstract class MelodiaManager<T : MelodiaObject> {
         return ArrayList<T>().apply { addAll(objects) }
     }
 
+    /**
+     * Updates the object with the given predicate, otherwise creates one with the changes specified.
+     *
+     * @param predicate The deciding factor in which item to update.
+     * @param factory If the item is not found, this generates the item.
+     * @param update This modifies the item.
+     *
+     * @return The item.
+     */
+    fun upsert(predicate: (T) -> Boolean, factory: () -> T, update: (T) -> T) : T {
+        val obj: T = getOrCreate(predicate, factory)
+        add(update(obj))
+        return obj
+    }
+
+    /**
+     * Updates the object with the given predicate, otherwise creates one with the changes specified.
+     *
+     * @param uuid The UUID of the item
+     * @param factory If the item is not found, this generates the item.
+     * @param update This modifies the item.
+     *
+     * @return The item.
+     */
+    fun upsert(uuid: UUID, factory: () -> T, update: (T) -> T) : T {
+        val obj: T = getOrCreate(uuid, factory)
+        add(update(obj))
+        return obj
+    }
+
+    /**
+     * Removes an item from the manager's cache.
+     *
+     * @param predicate The deciding factory in which item(s) to remove.
+     */
+    fun delete(predicate: (T) -> Boolean) {
+        objects.removeIf(predicate)
+    }
+
+    /**
+     * Removes an item from the manager's cache.
+     *
+     * @param uuid The UUID of the item to remove.
+     */
+    fun delete(uuid: UUID) {
+        delete { obj -> obj.uuid == uuid }
+    }
+
 }

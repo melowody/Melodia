@@ -1,12 +1,8 @@
 package dev.meluhdy.melodia.manager
 
+import dev.meluhdy.melodia.exception.CouldNotSaveException
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
-
-/**
- * An exception to throw when an item could not be saved to a file.
- */
-internal class CouldNotSaveException(msg: String) : Exception(msg)
 
 /**
  * An upgrade to the MelodiaManager that tracks items and saves the states between server restarts.
