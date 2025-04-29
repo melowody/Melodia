@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.meluhdy.melodia.command.CommandTest" tests="1" skipped="0" failures="1" errors="0" timestamp="2025-04-29T22:29:24" hostname="MELS-HOME" time="1.718">
+  <properties/>
+  <testcase name="baseTest()" classname="dev.meluhdy.melodia.command.CommandTest" time="1.718">
+    <failure message="java.lang.AssertionError: Assertion failed" type="java.lang.AssertionError">java.lang.AssertionError: Assertion failed
+	at dev.meluhdy.melodia.command.CommandTest.baseTest(CommandTest.kt:21)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+</failure>
+  </testcase>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
