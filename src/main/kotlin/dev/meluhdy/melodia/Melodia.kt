@@ -2,10 +2,12 @@ package dev.meluhdy.melodia
 
 import org.bukkit.plugin.java.JavaPlugin
 
+internal lateinit var melodiaInstance: Melodia
+
 class Melodia : JavaPlugin() {
 
     override fun onEnable() {
-        // Plugin startup logic
+        melodiaInstance = this
     }
 
     override fun onDisable() {
