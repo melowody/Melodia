@@ -1,0 +1,4 @@
+name: Melodia
+version: '1.0-SNAPSHOT'
+main: dev.meluhdy.melodia.Melodia
+api-version: '1.21'
