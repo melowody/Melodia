@@ -10,8 +10,10 @@ import org.bukkit.entity.Player
 
 abstract class MelodiaCommand(literal: String) : LiteralArgumentBuilder<CommandSourceStack>(literal) {
 
+    abstract val children: ArrayList<MelodiaCommand>
+
     init {
-        getChildren().forEach { command ->
+        children.forEach { command ->
             this.then(command)
         }
 
@@ -42,8 +44,6 @@ abstract class MelodiaCommand(literal: String) : LiteralArgumentBuilder<CommandS
         }
         return true
     }
-
-    abstract fun getChildren(): ArrayList<MelodiaCommand>
 
     abstract fun onCommand(context: CommandContext<CommandSourceStack>): Int
 
