@@ -3,7 +3,7 @@ package dev.meluhdy.melodia.gui
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
-abstract class MelodiaPaginationGUI<T>(p: Player, val prevGUI: MelodiaGUI?): MelodiaGUI(p) {
+abstract class MelodiaPaginationGUI<T>(p: Player, val prevGUI: MelodiaGUI? = null): MelodiaGUI(p) {
 
     abstract val itemRows: Int
 
