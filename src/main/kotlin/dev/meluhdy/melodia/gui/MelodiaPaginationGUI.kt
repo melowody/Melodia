@@ -45,7 +45,7 @@ abstract class MelodiaPaginationGUI<T>(p: Player, val prevGUI: MelodiaGUI? = nul
 
     override val melodiaItems: ArrayList<MelodiaGUIItem>
         get() {
-            val list = melodiaItems.toCollection(ArrayList())
+            val list = ArrayList(melodiaItems)
             list.addAll(objectMelodiaItems)
             return list
         }

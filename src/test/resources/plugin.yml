@@ -1,0 +1,9 @@
+name: MelodiaTest
+version: '1.0-SNAPSHOT'
+main: dev.meluhdy.melodia.MelodiaPluginTest
+api-version: '1.21'
+
+commands:
+  test:
+    description: Used for testing
+    usage: /test [args]
