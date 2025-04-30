@@ -8,8 +8,16 @@ import dev.meluhdy.melodia.annotation.UserOnly
 import io.papermc.paper.command.brigadier.CommandSourceStack
 import org.bukkit.entity.Player
 
+/**
+ * A wrapper for commands to make them easier to build, and allows for the added annotations to be used
+ *
+ * @param literal The name of the (sub-)command, i.e. "test" for "/test"
+ */
 abstract class MelodiaCommand(literal: String) : LiteralArgumentBuilder<CommandSourceStack>(literal) {
 
+    /**
+     * A list of any child commands this command has (i.e. the "bar" in "/foo bar")
+     */
     abstract val children: ArrayList<MelodiaCommand>
 
     init {
@@ -45,6 +53,11 @@ abstract class MelodiaCommand(literal: String) : LiteralArgumentBuilder<CommandS
         return true
     }
 
+    /**
+     * The logic to run when this command is run
+     *
+     * @param context The CommandContext given by PaperSpigot and Brigadier
+     */
     abstract fun onCommand(context: CommandContext<CommandSourceStack>): Int
 
 }
