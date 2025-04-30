@@ -3,6 +3,7 @@ package dev.meluhdy.melodia
 import dev.meluhdy.melodia.command.MelodiaCommand
 import dev.meluhdy.melodia.utils.TextUtils
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents
+import org.bukkit.Bukkit
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
@@ -41,6 +42,10 @@ abstract class MelodiaPlugin : JavaPlugin() {
                 println("Registering ${command.literal}")
                 commands.registrar().register(command.build())
             }
+        }
+
+        listeners.forEach { listener ->
+            Bukkit.getPluginManager().registerEvents(listener, this)
         }
 
         resourceFiles.forEach { file ->
