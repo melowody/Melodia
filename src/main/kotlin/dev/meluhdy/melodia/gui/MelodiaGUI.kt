@@ -39,7 +39,6 @@ abstract class MelodiaGUI(protected val p: Player): InventoryHolder {
         if (_inv == null) { _inv = melodiaInstance.server.createInventory(this, rows * 9, title) }
         _inv!!
     }
-    private set
 
     /**
      * A list of clickable items to put into the GUI
