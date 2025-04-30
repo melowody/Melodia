@@ -3,6 +3,7 @@ package dev.meluhdy.melodia
 import dev.meluhdy.melodia.command.MelodiaCommand
 import dev.meluhdy.melodia.utils.TextUtils
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents
+import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 
@@ -25,6 +26,11 @@ abstract class MelodiaPlugin : JavaPlugin() {
      * The list of files in resources to overwrite with the plugin version
      */
     abstract val resourceFiles: ArrayList<String>
+
+    /**
+     * The list of Listeners for the plugin to listen to
+     */
+    abstract val listeners: ArrayList<Listener>
 
     override fun onEnable() {
 
