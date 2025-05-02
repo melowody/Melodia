@@ -1,5 +1,6 @@
 package dev.meluhdy.melodia.utils
 
+import dev.meluhdy.melodia.Melodia
 import dev.meluhdy.melodia.MelodiaPlugin
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.Component.text
@@ -30,7 +31,6 @@ internal class TranslationBundleControl(val plugin: MelodiaPlugin) : ResourceBun
     ): ResourceBundle? {
         val bundleName = toBundleName(baseName, locale)
         val resourceName = toResourceName(bundleName, "properties")
-        println("Trying to load $resourceName")
 
         val stream = plugin.getResource(resourceName) ?: return null
         return stream.use { PropertyResourceBundle(it) }
@@ -46,6 +46,7 @@ fun Component.toMiniMessage(): String = MiniMessage.miniMessage().serialize(this
 /**
  * A collection of functions to deal with text and chat messages
  */
+@Suppress("unused")
 object TextUtils {
 
     /**
@@ -69,6 +70,7 @@ object TextUtils {
      * Translates a message and returns a MiniMessage
      */
     fun translate(plugin: MelodiaPlugin, id: String, lang: Locale, vararg args: Any): String {
+        Melodia.logger.debug("Translating ID $id in ${plugin::class.simpleName} into ${lang.language} with args ${args.joinToString(", ")}")
         val template = getTranslationString(plugin, id, lang)
 
         if (args.isEmpty()) return template
@@ -103,21 +105,14 @@ object TextUtils {
     }
 
     fun translateList(plugin: MelodiaPlugin, id: String, lang: Locale, vararg args: Any): ArrayList<String> {
-        println("1")
+        Melodia.logger.debug("Translating list in ${plugin::class.simpleName} into ${lang.language} with ID $id and args ${args.joinToString(", ")}")
         val out = arrayListOf<String>()
-        println("2")
         val bundle = getBundle(plugin, lang)
-        println("3")
         var index = 0
-        println("Keys:")
-        bundle.keys.toList().forEach {key -> println(key)}
-        println(" ")
 
         while (true) {
 
             val key = "$id.$index"
-
-            println("$key: ${bundle.containsKey(key)}")
 
             if (!bundle.containsKey(key)) break
 

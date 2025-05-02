@@ -1,6 +1,6 @@
 package dev.meluhdy.melodia.gui
 
-import dev.meluhdy.melodia.melodiaInstance
+import dev.meluhdy.melodia.Melodia
 import net.kyori.adventure.text.TextComponent
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -35,7 +35,7 @@ abstract class MelodiaGUI(protected val p: Player): InventoryHolder {
      */
     val inv: Inventory
     get() = run {
-        if (_inv == null) { _inv = melodiaInstance.server.createInventory(this, rows * 9, title) }
+        if (_inv == null) { _inv = Melodia.melodiaInstance.server.createInventory(this, rows * 9, title) }
         _inv!!
     }
 
@@ -48,6 +48,7 @@ abstract class MelodiaGUI(protected val p: Player): InventoryHolder {
      * Initializes the inventory and opens it for the given Player
      */
     fun open() {
+        Melodia.logger.debug("${p.name} is opening ${this::class.simpleName}")
         initializeItems()
         this.p.openInventory(this.inv)
     }
@@ -84,6 +85,7 @@ abstract class MelodiaGUI(protected val p: Player): InventoryHolder {
      */
     @EventHandler(priority = EventPriority.HIGH)
     protected fun handleClick(e: InventoryClickEvent) {
+        Melodia.logger.debug("${p.name} clicked ${e.rawSlot} in ${this::class.simpleName}")
         if (e.clickedInventory != this.inv) return
         if (e.rawSlot < this.inv.size) {
             e.isCancelled = true

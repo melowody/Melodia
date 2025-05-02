@@ -1,6 +1,7 @@
 package dev.meluhdy.melodia.utils
 
 import com.destroystokyo.paper.profile.PlayerProfile
+import dev.meluhdy.melodia.Melodia
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
@@ -14,12 +15,14 @@ import java.util.UUID
 object ItemUtils {
 
     private fun getProfile(url: String) : PlayerProfile {
+        Melodia.logger.debug("Getting Profile from Url: $url")
         val profile = Bukkit.createProfile(UUID.randomUUID())
         val textures = profile.textures
         val urlObject: URL
         try {
             urlObject = URI(url).toURL()
         } catch (e: MalformedURLException) {
+            Melodia.logger.error("Failed to load profile from Url: $url")
             throw RuntimeException("Invalid URL", e)
         }
         textures.skin = urlObject
@@ -35,6 +38,7 @@ object ItemUtils {
      * @param lore The lore to give it, line by line
      */
     fun modifyItem(item: ItemStack, title: String? = null, vararg lore: String): ItemStack {
+        Melodia.logger.debug("Modifying Item: ${item.type.name} with title $title and lore ${lore.joinToString(", ")}")
         val itemMeta = item.itemMeta
         if (title != null)
             itemMeta.displayName(TextUtils.legacyToMiniMessage(title).fromMiniMessage())
@@ -63,6 +67,7 @@ object ItemUtils {
      * @param lore The lore of the ItemStack.
      */
     fun createSkull(skullUrl: String, count: Int = 1, title: String? = null, vararg lore: String): ItemStack {
+        Melodia.logger.debug("Creating $count skull${if (count != 1) 's' else ""} with URL $skullUrl, title $title, and lore ${lore.joinToString(", ")}")
         val item = ItemStack(Material.PLAYER_HEAD, count)
         if (skullUrl.isEmpty()) return modifyItem(item, title, *lore)
 
@@ -84,6 +89,7 @@ object ItemUtils {
      *
      */
     fun createSkull(player: UUID, count: Int = 1, title: String? = null, vararg lore: String): ItemStack {
+        Melodia.logger.debug("Creating $count skull${if (count != 1) 's' else ""} with UUID $player, title $title, and lore ${lore.joinToString(", ")}")
         val item = ItemStack(Material.PLAYER_HEAD, count)
         val itemMeta = item.itemMeta as SkullMeta
         itemMeta.owningPlayer = Bukkit.getOfflinePlayer(player)

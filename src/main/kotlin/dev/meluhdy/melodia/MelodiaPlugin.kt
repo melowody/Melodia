@@ -1,6 +1,7 @@
 package dev.meluhdy.melodia
 
 import dev.meluhdy.melodia.command.MelodiaCommand
+import dev.meluhdy.melodia.utils.ConsoleLogger
 import dev.meluhdy.melodia.utils.TranslationFolder
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents
 import org.bukkit.Bukkit
@@ -32,25 +33,37 @@ abstract class MelodiaPlugin : JavaPlugin() {
      */
     abstract val translationFolder: TranslationFolder
 
+    /**
+     * The logger
+     */
+    abstract val logger: ConsoleLogger
+
     @Suppress("UnstableApiUsage")
     override fun onEnable() {
 
+        logger.trace("Registering Commands...")
         lifecycleManager.registerEventHandler(
             LifecycleEvents.COMMANDS
         ) { commands ->
             melodiaCommands.forEach { command ->
-                println("Registering ${command.literal}")
+                logger.trace("Registering Command: ${command.literal}")
                 commands.registrar().register(command.build())
             }
         }
 
+        logger.trace("Registering Listeners...")
         listeners.forEach { listener ->
+            logger.trace("Registering Listener: ${listener::class.simpleName}")
             Bukkit.getPluginManager().registerEvents(listener, this)
         }
 
+        logger.trace("Saving Resource Files...")
         resourceFiles.forEach { file ->
+            logger.trace("Saving File: $file")
             this.saveResource(file, true)
         }
+
+        logger.info("${logger.prefix} started!")
 
     }
 

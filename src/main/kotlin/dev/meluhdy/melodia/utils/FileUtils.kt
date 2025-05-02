@@ -12,6 +12,7 @@ object FileUtils {
 
     @Throws(IOException::class)
     fun getYMLConfig(plugin: MelodiaPlugin, fileName: String): YamlConfiguration {
+
         val file = File(plugin.dataFolder, fileName)
         if (!file.exists()) file.createNewFile()
         assert(file.exists())
