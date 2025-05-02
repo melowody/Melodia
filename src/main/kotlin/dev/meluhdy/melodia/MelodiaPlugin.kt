@@ -1,6 +1,7 @@
 package dev.meluhdy.melodia
 
 import dev.meluhdy.melodia.command.MelodiaCommand
+import dev.meluhdy.melodia.utils.TranslationFolder
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents
 import org.bukkit.Bukkit
 import org.bukkit.event.Listener
@@ -25,6 +26,11 @@ abstract class MelodiaPlugin : JavaPlugin() {
      * The list of Listeners for the plugin to listen to
      */
     abstract val listeners: ArrayList<Listener>
+
+    /**
+     * The location of the translation files
+     */
+    abstract val translationFolder: TranslationFolder
 
     @Suppress("UnstableApiUsage")
     override fun onEnable() {

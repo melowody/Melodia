@@ -37,8 +37,8 @@ object ItemUtils {
     fun modifyItem(item: ItemStack, title: String? = null, vararg lore: String): ItemStack {
         val itemMeta = item.itemMeta
         if (title != null)
-            itemMeta.displayName(TextUtils.legacyColorize(title))
-        itemMeta.lore(lore.map(TextUtils::legacyColorize))
+            itemMeta.displayName(TextUtils.legacyToMiniMessage(title).fromMiniMessage())
+        itemMeta.lore(lore.map { TextUtils.legacyToMiniMessage(it).fromMiniMessage() })
         item.itemMeta = itemMeta
         return item
     }
