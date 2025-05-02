@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack
  * @param p The player to open the GUI for
  * @param prevGUI The GUI that opened this GUI, if it exists (Optional)
  */
+@Suppress("unused")
 abstract class MelodiaPaginationGUI<T>(p: Player, val prevGUI: MelodiaGUI? = null): MelodiaGUI(p) {
 
     /**

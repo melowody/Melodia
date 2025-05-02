@@ -10,6 +10,7 @@ import java.io.IOException
 /**
  * An extension of MelodiaManager with file saving capabilities
  */
+@Suppress("unused")
 abstract class MelodiaSavingManager<T: MelodiaItem> : MelodiaManager<T>() {
 
     companion object {

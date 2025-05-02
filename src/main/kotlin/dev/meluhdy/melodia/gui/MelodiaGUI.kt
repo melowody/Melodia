@@ -1,7 +1,6 @@
 package dev.meluhdy.melodia.gui
 
 import dev.meluhdy.melodia.melodiaInstance
-import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextComponent
 import org.bukkit.Material
 import org.bukkit.entity.Player

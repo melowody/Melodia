@@ -13,6 +13,7 @@ import org.bukkit.entity.Player
  *
  * @param literal The name of the (sub-)command, i.e. "test" for "/test"
  */
+@Suppress("UnstableApiUsage")
 abstract class MelodiaCommand(literal: String) : LiteralArgumentBuilder<CommandSourceStack>(literal) {
 
     /**

@@ -5,6 +5,7 @@ import java.util.UUID
 /**
  * A class to manage MelodiaItems and keep track of them easily
  */
+@Suppress("unused")
 abstract class MelodiaManager<T: MelodiaItem> {
 
     private val objects: ArrayList<T> = arrayListOf()

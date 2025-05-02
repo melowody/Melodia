@@ -10,6 +10,7 @@ import java.net.URI
 import java.net.URL
 import java.util.UUID
 
+@Suppress("unused")
 object ItemUtils {
 
     private fun getProfile(url: String) : PlayerProfile {
@@ -36,8 +37,8 @@ object ItemUtils {
     fun modifyItem(item: ItemStack, title: String? = null, vararg lore: String): ItemStack {
         val itemMeta = item.itemMeta
         if (title != null)
-            itemMeta.displayName(TextUtils.colorize(title))
-        itemMeta.lore(lore.map(TextUtils::colorize))
+            itemMeta.displayName(TextUtils.legacyColorize(title))
+        itemMeta.lore(lore.map(TextUtils::legacyColorize))
         item.itemMeta = itemMeta
         return item
     }

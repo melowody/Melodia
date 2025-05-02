@@ -6,6 +6,7 @@ import java.io.File
 import java.io.IOException
 import kotlin.jvm.Throws
 
+@Suppress("unused")
 object FileUtils {
 
     @Throws(IOException::class)

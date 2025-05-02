@@ -1,12 +1,10 @@
 package dev.meluhdy.melodia
 
 import dev.meluhdy.melodia.command.MelodiaCommand
-import dev.meluhdy.melodia.utils.TextUtils
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents
 import org.bukkit.Bukkit
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
-import java.io.File
 
 /**
  * The base plugin, made to handle MelodiaCommands well
@@ -19,11 +17,6 @@ abstract class MelodiaPlugin : JavaPlugin() {
     abstract val melodiaCommands: ArrayList<MelodiaCommand>
 
     /**
-     * The list of languages that this plugin localizes to
-     */
-    abstract val languageEnum: HashMap<TextUtils.Language, String>
-
-    /**
      * The list of files in resources to overwrite with the plugin version
      */
     abstract val resourceFiles: ArrayList<String>
@@ -33,6 +26,7 @@ abstract class MelodiaPlugin : JavaPlugin() {
      */
     abstract val listeners: ArrayList<Listener>
 
+    @Suppress("UnstableApiUsage")
     override fun onEnable() {
 
         lifecycleManager.registerEventHandler(
