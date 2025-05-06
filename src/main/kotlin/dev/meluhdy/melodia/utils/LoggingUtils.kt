@@ -11,7 +11,7 @@ object LoggingUtils {
         BLACK("\u001b[30m"),
         DARK_BLUE("\u001b[34m"),
         DARK_GREEN("\u001b[32m"),
-        DARK_AQUA("\u001b[35m"),
+        DARK_AQUA("\u001b[36m"),
         DARK_RED("\u001b[31m"),
         DARK_PURPLE("\u001b[35m"),
         GOLD("\u001b[33m"),
@@ -45,8 +45,8 @@ object LoggingUtils {
 
     enum class ConsoleLevel(val color: Color, val level: Int) {
         INFO(Color.WHITE, 0),
-        TRACE(Color.BLUE, 1),
-        DEBUG(Color.YELLOW, 2),
+        TRACE(Color.AQUA, 1),
+        DEBUG(Color.LIGHT_PURPLE, 2),
         ERROR(Color.RED, 0);
     }
 
@@ -59,7 +59,7 @@ class ConsoleLogger(val prefix: String, val level: ConsoleLevel) {
 
     internal fun writeMessage(l: ConsoleLevel, m: String) {
         if (l.level > level.level) return
-        Bukkit.getConsoleSender().sendMessage("${l.color}${prefixFormat.format(l.name)} $m${l.color}")
+        Bukkit.getConsoleSender().sendMessage("${l.color}${prefixFormat.format(l.name)} $m${LoggingUtils.Color.RESET}")
     }
 
     fun info(msg: String) = writeMessage(ConsoleLevel.INFO, msg)
