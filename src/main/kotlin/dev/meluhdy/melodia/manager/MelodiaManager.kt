@@ -97,4 +97,18 @@ abstract class MelodiaManager<T: MelodiaItem> {
      */
     fun delete(uuid: UUID) = delete { it.uuid == uuid }
 
+    /**
+     * Checks if an object with the given UUID exists in the Manager
+     *
+     * @param uuid The UUID of the object
+     */
+    fun exists(uuid: UUID) = exists { it.uuid == uuid }
+
+    /**
+     * Checks if an object that matches the given predicate exists in the Manager
+     *
+     * @param predicate The predicate to match with
+     */
+    fun exists(predicate: (T) -> Boolean) = objects.any(predicate)
+
 }

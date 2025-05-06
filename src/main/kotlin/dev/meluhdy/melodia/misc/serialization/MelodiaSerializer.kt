@@ -22,12 +22,14 @@ abstract class MelodiaSerializer<T: MelodiaItem>: KSerializer<T> {
 
     }
 
-    override val descriptor: SerialDescriptor = buildClassSerialDescriptor(this::class.qualifiedName!!) {
-        element("uuid", String.serializer().descriptor)
-        steps.forEach {
-            element(it.name, it.serializer.descriptor)
+    override val descriptor: SerialDescriptor
+        get() = buildClassSerialDescriptor(this::class.qualifiedName!!) {
+            element("uuid", String.serializer().descriptor)
+            steps.forEach {
+                element(it.name, it.serializer.descriptor)
+            }
         }
-    }
+
     abstract val builder: Builder<T>
 
     abstract val steps: Array<SerializerElement<*, T>>
@@ -40,7 +42,7 @@ abstract class MelodiaSerializer<T: MelodiaItem>: KSerializer<T> {
             else {
                 val step = steps[index - 1]
                 @Suppress("UNCHECKED_CAST")
-                (step.decode as (Any, Builder<T>) -> Unit)(decodeSerializableElement(descriptor, index, step.serializer as KSerializer<Any>), builder)
+                (step.decode as (Any?, Builder<T>) -> Unit)(decodeSerializableElement(descriptor, index, step.serializer as KSerializer<Any?>), builder)
             }
         }
         builder.build()
@@ -50,7 +52,7 @@ abstract class MelodiaSerializer<T: MelodiaItem>: KSerializer<T> {
         encodeStringElement(descriptor, 0, value.uuid.toString())
         steps.forEachIndexed { index, step ->
             @Suppress("UNCHECKED_CAST")
-            encodeSerializableElement(descriptor, index + 1, step.serializer as KSerializer<Any>, step.encode(value) as Any)
+            encodeSerializableElement(descriptor, index + 1, step.serializer as KSerializer<Any?>, step.encode(value))
         }
     }
 
