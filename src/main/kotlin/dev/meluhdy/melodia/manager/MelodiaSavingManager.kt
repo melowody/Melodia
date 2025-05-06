@@ -7,6 +7,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import java.io.File
 import java.io.IOException
+import java.nio.file.Files
 
 /**
  * An extension of MelodiaManager with file saving capabilities
@@ -27,6 +28,7 @@ abstract class MelodiaSavingManager<T: MelodiaItem> : MelodiaManager<T>() {
             Melodia.logger.trace("Saving ${it.uuid} in Manager ${this::class.simpleName}")
             try {
                 val file = getFile(it)
+                Files.createDirectories(file.parentFile.toPath())
                 if (!file.exists()) file.createNewFile()
                 file.writeText(serializer.encodeToString(serializeObject(it)))
             } catch (e: IOException) {
