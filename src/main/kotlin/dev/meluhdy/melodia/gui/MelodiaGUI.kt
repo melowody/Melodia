@@ -13,6 +13,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.event.inventory.InventoryDragEvent
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.InventoryHolder
 import org.bukkit.inventory.ItemStack
@@ -32,7 +33,7 @@ abstract class MelodiaGUI(val plugin: MelodiaPlugin, protected val p: Player): I
     /**
      * The title of the GUI
      */
-    abstract val titleID: TranslatedString
+    abstract val title: TextComponent
 
     private var _inv: Inventory? = null
 
@@ -41,7 +42,7 @@ abstract class MelodiaGUI(val plugin: MelodiaPlugin, protected val p: Player): I
      */
     val inv: Inventory
     get() = run {
-        if (_inv == null) { _inv = Melodia.melodiaInstance.server.createInventory(this, rows * 9, TextUtils.translate(plugin, titleID.id, p.locale(), *titleID.args).fromMiniMessage()) }
+        if (_inv == null) { _inv = Melodia.melodiaInstance.server.createInventory(this, rows * 9, title) }
         _inv!!
     }
 
@@ -96,13 +97,18 @@ abstract class MelodiaGUI(val plugin: MelodiaPlugin, protected val p: Player): I
     @EventHandler(priority = EventPriority.HIGH)
     fun handleClick(e: InventoryClickEvent) {
         Melodia.logger.debug("${p.name} clicked ${e.rawSlot} in ${this::class.simpleName}")
-        Melodia.logger.debug("${e.clickedInventory!!.holder!!::class} <-> ${this::class}")
+        if (e.clickedInventory == null || e.clickedInventory!!.holder == null || e.clickedInventory!!.holder!!::class != this::class) return
         if (e.rawSlot < this.inv.size) {
             e.isCancelled = true
         }
-        if (e.clickedInventory == null || e.clickedInventory!!.holder == null || e.clickedInventory!!.holder!!::class != this::class) return
         melodiaItems.firstOrNull { item -> item.position == e.rawSlot }?.clickFunc?.accept(e)
         onInventoryClick(e)
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    fun handleDrag(e: InventoryDragEvent) {
+        if (e.inventory.holder == null || e.inventory.holder!!::class != this::class) return
+        e.isCancelled = true
     }
 
     /**
