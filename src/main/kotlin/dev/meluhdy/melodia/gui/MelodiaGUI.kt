@@ -46,8 +46,15 @@ abstract class MelodiaGUI(val plugin: MelodiaPlugin, protected val p: Player): I
         _inv!!
     }
 
+    companion object {
+        private var registered = false
+    }
+
     init {
-        Bukkit.getPluginManager().registerEvents(this, plugin)
+        if (!registered) {
+            registered = true
+            Bukkit.getPluginManager().registerEvents(this, plugin)
+        }
     }
 
     /**
