@@ -38,7 +38,6 @@ internal class TranslationBundleControl(val plugin: MelodiaPlugin) : ResourceBun
 
 }
 
-@Suppress("unused")
 fun String.fromMiniMessage(): Component = MiniMessage.miniMessage().deserialize(this)
 
 fun Component.toMiniMessage(): String = MiniMessage.miniMessage().serialize(this)

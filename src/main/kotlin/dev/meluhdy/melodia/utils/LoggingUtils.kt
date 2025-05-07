@@ -52,7 +52,6 @@ object LoggingUtils {
 
 }
 
-@Suppress("unused")
 class ConsoleLogger(val prefix: String, val level: ConsoleLevel) {
 
     private val prefixFormat = "[$prefix/%s]"
