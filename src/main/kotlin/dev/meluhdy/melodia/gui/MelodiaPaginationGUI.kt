@@ -1,5 +1,6 @@
 package dev.meluhdy.melodia.gui
 
+import dev.meluhdy.melodia.MelodiaPlugin
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
@@ -10,7 +11,7 @@ import org.bukkit.inventory.ItemStack
  * @param prevGUI The GUI that opened this GUI, if it exists (Optional)
  */
 @Suppress("unused")
-abstract class MelodiaPaginationGUI<T>(p: Player, val prevGUI: MelodiaGUI? = null): MelodiaGUI(p) {
+abstract class MelodiaPaginationGUI<T>(plugin: MelodiaPlugin, p: Player, val prevGUI: MelodiaGUI? = null): MelodiaGUI(plugin, p) {
 
     /**
      * The number of rows for the items to appear in

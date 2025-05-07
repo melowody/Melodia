@@ -50,6 +50,7 @@ abstract class MelodiaPlugin : JavaPlugin() {
         ) { commands ->
             melodiaCommands.forEach { command ->
                 logger.debug("Registering Command: ${command.literal}")
+                command.register()
                 commands.registrar().register(command.build())
             }
         }

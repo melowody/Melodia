@@ -22,8 +22,9 @@ abstract class MelodiaCommand(literal: String) : LiteralArgumentBuilder<CommandS
      */
     abstract val children: ArrayList<MelodiaCommand>
 
-    init {
+    fun register() {
         children.forEach { command ->
+            command.register()
             this.then(command)
         }
 

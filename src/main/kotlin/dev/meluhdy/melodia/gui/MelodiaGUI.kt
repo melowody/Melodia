@@ -1,11 +1,17 @@
 package dev.meluhdy.melodia.gui
 
 import dev.meluhdy.melodia.Melodia
+import dev.meluhdy.melodia.MelodiaPlugin
+import dev.meluhdy.melodia.utils.TextUtils
+import dev.meluhdy.melodia.utils.TranslatedString
+import dev.meluhdy.melodia.utils.fromMiniMessage
 import net.kyori.adventure.text.TextComponent
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
+import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.InventoryHolder
@@ -16,7 +22,7 @@ import org.bukkit.inventory.ItemStack
  *
  * @param p The Player to open the GUI for
  */
-abstract class MelodiaGUI(protected val p: Player): InventoryHolder {
+abstract class MelodiaGUI(val plugin: MelodiaPlugin, protected val p: Player): InventoryHolder, Listener {
 
     /**
      * The amount of rows for the GUI to have (9 slots wide)
@@ -26,7 +32,7 @@ abstract class MelodiaGUI(protected val p: Player): InventoryHolder {
     /**
      * The title of the GUI
      */
-    abstract val title: TextComponent
+    abstract val titleID: TranslatedString
 
     private var _inv: Inventory? = null
 
@@ -35,8 +41,12 @@ abstract class MelodiaGUI(protected val p: Player): InventoryHolder {
      */
     val inv: Inventory
     get() = run {
-        if (_inv == null) { _inv = Melodia.melodiaInstance.server.createInventory(this, rows * 9, title) }
+        if (_inv == null) { _inv = Melodia.melodiaInstance.server.createInventory(this, rows * 9, TextUtils.translate(plugin, titleID.id, p.locale(), *titleID.args).fromMiniMessage()) }
         _inv!!
+    }
+
+    init {
+        Bukkit.getPluginManager().registerEvents(this, plugin)
     }
 
     /**
@@ -84,12 +94,13 @@ abstract class MelodiaGUI(protected val p: Player): InventoryHolder {
      * @param e The InventoryClickEvent passed by Bukkit
      */
     @EventHandler(priority = EventPriority.HIGH)
-    protected fun handleClick(e: InventoryClickEvent) {
+    fun handleClick(e: InventoryClickEvent) {
         Melodia.logger.debug("${p.name} clicked ${e.rawSlot} in ${this::class.simpleName}")
-        if (e.clickedInventory != this.inv) return
+        Melodia.logger.debug("${e.clickedInventory!!.holder!!::class} <-> ${this::class}")
         if (e.rawSlot < this.inv.size) {
             e.isCancelled = true
         }
+        if (e.clickedInventory == null || e.clickedInventory!!.holder == null || e.clickedInventory!!.holder!!::class != this::class) return
         melodiaItems.firstOrNull { item -> item.position == e.rawSlot }?.clickFunc?.accept(e)
         onInventoryClick(e)
     }
@@ -100,5 +111,7 @@ abstract class MelodiaGUI(protected val p: Player): InventoryHolder {
      * @param e The InventoryClickEvent passed by Bukkit
      */
     protected abstract fun onInventoryClick(e: InventoryClickEvent)
+
+    override fun getInventory(): Inventory = inv
 
 }
