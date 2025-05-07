@@ -17,6 +17,7 @@ import org.bukkit.event.inventory.InventoryDragEvent
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.InventoryHolder
 import org.bukkit.inventory.ItemStack
+import kotlin.reflect.KClass
 
 /**
  * A wrapper for GUIs to make them easier to initialize and handle
@@ -47,12 +48,12 @@ abstract class MelodiaGUI(val plugin: MelodiaPlugin, protected val p: Player): I
     }
 
     companion object {
-        private var registered = false
+        private var registered: ArrayList<KClass<out MelodiaGUI>> = arrayListOf()
     }
 
     init {
-        if (!registered) {
-            registered = true
+        if (!registered.contains(this::class)) {
+            registered.add(this::class)
             Bukkit.getPluginManager().registerEvents(this, plugin)
         }
     }
