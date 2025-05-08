@@ -35,10 +35,10 @@ abstract class MelodiaCommand(literal: String) : LiteralArgumentBuilder<CommandS
     }
 
     private fun checkAnnotations(ctx: CommandContext<CommandSourceStack>): Boolean {
-        Melodia.logger.trace("Checking Annotations for ${this::class.simpleName}")
+        Melodia.melodiaInstance.logger.trace("Checking Annotations for ${this::class.simpleName}")
         val safeCommandMethod = this::class.java.getDeclaredMethod("onCommand", CommandContext::class.java)
         safeCommandMethod.annotations.forEach { annotation ->
-            Melodia.logger.debug("Found Annotation: ${annotation::class.simpleName}")
+            Melodia.melodiaInstance.logger.debug("Found Annotation: ${annotation::class.simpleName}")
             val sender = ctx.source.sender
             when (annotation) {
                 is UserOnly -> {

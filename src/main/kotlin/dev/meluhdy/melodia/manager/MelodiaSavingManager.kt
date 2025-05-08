@@ -1,7 +1,6 @@
 package dev.meluhdy.melodia.manager
 
 import dev.meluhdy.melodia.Melodia
-import dev.meluhdy.melodia.exception.CouldNotSaveException
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
@@ -24,15 +23,15 @@ abstract class MelodiaSavingManager<T: MelodiaItem> : MelodiaManager<T>() {
      */
     fun save() {
         getAll().forEach {
-            Melodia.logger.trace("Saving ${it.uuid} in Manager ${this::class.simpleName}")
+            Melodia.melodiaInstance.logger.trace("Saving ${it.uuid} in Manager ${this::class.simpleName}")
             try {
                 val file = getFile(it)
                 Files.createDirectories(file.parentFile.toPath())
                 if (!file.exists()) file.createNewFile()
                 file.writeText(serializer.encodeToString(serializeObject(it)))
             } catch (e: IOException) {
-                throw CouldNotSaveException("Could not save object ${it.uuid} in ${this.javaClass.simpleName}")
-                e.printStackTrace()
+                Melodia.melodiaInstance.logger.error("Could not save object ${it.uuid} in ${this.javaClass.simpleName}")
+                Melodia.melodiaInstance.logger.error(e.stackTraceToString())
             }
         }
     }
@@ -42,7 +41,7 @@ abstract class MelodiaSavingManager<T: MelodiaItem> : MelodiaManager<T>() {
      */
     fun load() {
         loadSaves().forEach {
-            Melodia.logger.trace("Loading item ${it.name} in Manager ${this::class.simpleName}")
+            Melodia.melodiaInstance.logger.trace("Loading item ${it.name} in Manager ${this::class.simpleName}")
             add(deserializeObject(serializer.decodeFromString<JsonElement>(it.readText())))
         }
     }

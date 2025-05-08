@@ -24,7 +24,7 @@ import kotlin.reflect.KClass
  *
  * @param p The Player to open the GUI for
  */
-abstract class MelodiaGUI(val plugin: MelodiaPlugin, protected val p: Player): InventoryHolder, Listener {
+abstract class MelodiaGUI(val plugin: MelodiaPlugin, val p: Player, val prevGUI: MelodiaGUI? = null): InventoryHolder, Listener {
 
     /**
      * The amount of rows for the GUI to have (9 slots wide)
@@ -67,7 +67,7 @@ abstract class MelodiaGUI(val plugin: MelodiaPlugin, protected val p: Player): I
      * Initializes the inventory and opens it for the given Player
      */
     fun open() {
-        Melodia.logger.debug("${p.name} is opening ${this::class.simpleName}")
+        Melodia.melodiaInstance.logger.debug("${p.name} is opening ${this::class.simpleName}")
         initializeItems()
         this.p.openInventory(this.inv)
     }
@@ -104,8 +104,8 @@ abstract class MelodiaGUI(val plugin: MelodiaPlugin, protected val p: Player): I
      */
     @EventHandler(priority = EventPriority.HIGH)
     fun handleClick(e: InventoryClickEvent) {
-        Melodia.logger.debug("${p.name} clicked ${e.rawSlot} in ${this::class.simpleName}")
         if (e.clickedInventory == null || e.clickedInventory!!.holder == null || e.clickedInventory!!.holder!!::class != this::class) return
+        Melodia.melodiaInstance.logger.debug("${p.name} clicked ${e.rawSlot} in ${this::class.simpleName}")
         if (e.rawSlot < this.inv.size) {
             e.isCancelled = true
         }

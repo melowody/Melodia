@@ -1,5 +1,6 @@
 package dev.meluhdy.melodia.gui
 
+import dev.meluhdy.melodia.Melodia
 import dev.meluhdy.melodia.MelodiaPlugin
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
@@ -11,7 +12,7 @@ import org.bukkit.inventory.ItemStack
  * @param prevGUI The GUI that opened this GUI, if it exists (Optional)
  */
 @Suppress("unused")
-abstract class MelodiaPaginationGUI<T>(plugin: MelodiaPlugin, p: Player, val prevGUI: MelodiaGUI? = null): MelodiaGUI(plugin, p) {
+abstract class MelodiaPaginationGUI<T>(plugin: MelodiaPlugin, p: Player, pg: MelodiaGUI? = null): MelodiaGUI(plugin, p, pg) {
 
     /**
      * The number of rows for the items to appear in
@@ -53,7 +54,7 @@ abstract class MelodiaPaginationGUI<T>(plugin: MelodiaPlugin, p: Player, val pre
                 list.add(MelodiaGUIItem(
                     (rows - 1) * 9,
                     prevItem
-                ) { prevGUI?.open() ?: p.closeInventory() })
+                ) { Melodia.melodiaInstance.logger.info("GRAHHH PREVGUI IS $this.prevGUI"); if (this.prevGUI != null) this.prevGUI.open() else p.closeInventory() })
             else
                 list.add(MelodiaGUIItem(
                     (rows - 1) * 9,
@@ -69,9 +70,9 @@ abstract class MelodiaPaginationGUI<T>(plugin: MelodiaPlugin, p: Player, val pre
             return list
         }
 
-    override val melodiaItems: ArrayList<MelodiaGUIItem>
+    override val melodiaItems: ArrayList<MelodiaGUIItem> = arrayListOf()
         get() {
-            val list = ArrayList(melodiaItems)
+            val list = ArrayList(field)
             list.addAll(objectMelodiaItems)
             return list
         }

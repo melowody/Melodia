@@ -69,7 +69,7 @@ object TextUtils {
      * Translates a message and returns a MiniMessage
      */
     fun translate(plugin: MelodiaPlugin, id: String, lang: Locale, vararg args: Any): String {
-        Melodia.logger.debug("Translating ID $id in ${plugin::class.simpleName} into ${lang.language} with args ${args.joinToString(", ")}")
+        Melodia.melodiaInstance.logger.debug("Translating ID $id in ${plugin::class.simpleName} into ${lang.language} with args ${args.joinToString(", ")}")
         val template = getTranslationString(plugin, id, lang)
 
         if (args.isEmpty()) return template
@@ -104,7 +104,7 @@ object TextUtils {
     }
 
     fun translateList(plugin: MelodiaPlugin, id: String, lang: Locale, vararg args: Any): ArrayList<String> {
-        Melodia.logger.debug("Translating list in ${plugin::class.simpleName} into ${lang.language} with ID $id and args ${args.joinToString(", ")}")
+        Melodia.melodiaInstance.logger.debug("Translating list in ${plugin::class.simpleName} into ${lang.language} with ID $id and args ${args.joinToString(", ")}")
         val out = arrayListOf<String>()
         val bundle = getBundle(plugin, lang)
         var index = 0
