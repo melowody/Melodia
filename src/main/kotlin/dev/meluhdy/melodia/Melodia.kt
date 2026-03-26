@@ -1,6 +1,7 @@
 package dev.meluhdy.melodia
 
 import dev.meluhdy.melodia.command.MelodiaCommand
+import dev.meluhdy.melodia.listener.PromptListener
 import dev.meluhdy.melodia.manager.MelodiaSavingManager
 import dev.meluhdy.melodia.utils.ConsoleLogger
 import dev.meluhdy.melodia.utils.LoggingUtils
@@ -15,7 +16,8 @@ class Melodia : MelodiaPlugin() {
     override val melodiaCommands: Array<MelodiaCommand> = arrayOf()
     override val resourceFiles: Array<String> = arrayOf()
     override val listeners: Array<Listener> = arrayOf(
-        UUIDManager
+        UUIDManager,
+        PromptListener
     )
     override val translationFolder: TranslationFolder = TranslationFolder("", Locale.ENGLISH)
     override val logger: ConsoleLogger = ConsoleLogger("Melodia", LoggingUtils.ConsoleLevel.DEBUG)
@@ -29,9 +31,8 @@ class Melodia : MelodiaPlugin() {
 
     override fun onEnable() {
         melodiaInstance = this
+
+        super.onEnable()
     }
 
-    override fun onDisable() {
-        // Plugin shutdown logic
-    }
 }

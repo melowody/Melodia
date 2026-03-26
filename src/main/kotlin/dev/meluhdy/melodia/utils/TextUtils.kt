@@ -2,11 +2,13 @@ package dev.meluhdy.melodia.utils
 
 import dev.meluhdy.melodia.Melodia
 import dev.meluhdy.melodia.MelodiaPlugin
+import dev.meluhdy.melodia.listener.PromptListener
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.Component.text
 import net.kyori.adventure.text.TextComponent
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
+import org.bukkit.entity.Player
 import java.util.Locale
 import java.util.PropertyResourceBundle
 import java.util.ResourceBundle
@@ -121,6 +123,11 @@ object TextUtils {
         }
 
         return out
+    }
+
+    fun prompt(message: TextComponent, player: Player, callback: (TextComponent) -> Unit) {
+        player.sendMessage(message)
+        PromptListener.prompts[player.uniqueId] = callback
     }
 
 }

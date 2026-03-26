@@ -54,7 +54,6 @@ object UUIDNameConverterSerializer: MelodiaSerializer<UUIDNameConverter>() {
 
     override val builder: Builder<UUIDNameConverter> = UUIDNameConverterSerializerBuilder()
     override val steps: Array<SerializerElement<*, UUIDNameConverter>> = arrayOf(
-        SerializerElement<UUID, UUIDNameConverter>("uuid", UUIDSerializer(), { it.uuid }, { uuid, builder -> builder.uuid = uuid }),
         SerializerElement<String, UUIDNameConverter>("name", String.serializer(), { it.name }, { string, builder -> (builder as UUIDNameConverterSerializerBuilder).name = string }),
         SerializerElement<Long, UUIDNameConverter>("timestamp", Long.serializer(), { it.timestamp }, { time, builder -> (builder as UUIDNameConverterSerializerBuilder).timestamp = time })
     )
