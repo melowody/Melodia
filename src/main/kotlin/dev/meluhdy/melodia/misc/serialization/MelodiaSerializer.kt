@@ -18,6 +18,8 @@ abstract class MelodiaSerializer<T: MelodiaItem>: KSerializer<T> {
 
         lateinit var uuid: UUID
 
+        fun isUUIDInitialized(): Boolean = ::uuid.isInitialized
+
         abstract fun build(): T
 
     }
@@ -44,6 +46,9 @@ abstract class MelodiaSerializer<T: MelodiaItem>: KSerializer<T> {
                 @Suppress("UNCHECKED_CAST")
                 (step.decode as (Any?, Builder<T>) -> Unit)(decodeSerializableElement(descriptor, index, step.serializer as KSerializer<Any?>), builder)
             }
+        }
+        if (!builder.isUUIDInitialized()) {
+            builder.uuid = UUID.randomUUID()
         }
         builder.build()
     }

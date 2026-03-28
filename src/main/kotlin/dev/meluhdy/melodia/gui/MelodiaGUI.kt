@@ -43,6 +43,7 @@ abstract class MelodiaGUI(val plugin: MelodiaPlugin, val p: Player, val prevGUI:
      */
     val inv: Inventory
     get() = run {
+        Melodia.melodiaInstance.logger.debug("Accessing Inventory")
         if (_inv == null) { _inv = Melodia.melodiaInstance.server.createInventory(this, rows * 9, title) }
         _inv!!
     }
@@ -66,7 +67,7 @@ abstract class MelodiaGUI(val plugin: MelodiaPlugin, val p: Player, val prevGUI:
     /**
      * Initializes the inventory and opens it for the given Player
      */
-    fun open() {
+    open fun open() {
         Melodia.melodiaInstance.logger.debug("${p.name} is opening ${this::class.simpleName}")
         initializeItems()
         this.p.openInventory(this.inv)

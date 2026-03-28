@@ -117,7 +117,7 @@ object TextUtils {
 
             if (!bundle.containsKey(key)) break
 
-            out.add(translate(plugin, key, lang, args))
+            out.add(translate(plugin, key, lang, *args))
 
             index++
         }
