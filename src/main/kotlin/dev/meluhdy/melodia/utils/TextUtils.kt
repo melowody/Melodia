@@ -8,6 +8,7 @@ import net.kyori.adventure.text.Component.text
 import net.kyori.adventure.text.TextComponent
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.util.Locale
 import java.util.PropertyResourceBundle
@@ -76,32 +77,19 @@ object TextUtils {
 
         if (args.isEmpty()) return template
 
-        val out = StringBuilder()
-        var curr = 0
+        val regex = Regex("\\{(\\d+)}")
 
-        for (i in 0..<args.size) {
-            val placeholder = "{$i}"
+        return regex.replace(template) { result ->
+            val index = result.groupValues[1].toInt()
 
-            while (true) {
-                val placeholderIndex = template.indexOf(placeholder, curr)
-                if (placeholderIndex == -1) break
+            if (index >= args.size) return@replace result.value
 
-                if (placeholderIndex > curr) out.append(template.substring(curr, placeholderIndex))
-
-                val value = args[i]
-
-                if (value is Component) out.append(value.toMiniMessage())
-                else if(value is TranslatedString) out.append(translate(plugin, value.id, lang, *value.args))
-                else out.append(value.toString())
-
-                curr = placeholderIndex + placeholder.length
+            when (val value = args[index]) {
+                is Component -> value.toMiniMessage()
+                is TranslatedString -> translate(plugin, value.id, lang, *value.args)
+                else -> value.toString()
             }
-
         }
-
-        if (curr < template.length) out.append(template.substring(curr))
-
-        return out.toString()
 
     }
 
@@ -128,6 +116,12 @@ object TextUtils {
     fun prompt(message: TextComponent, player: Player, callback: (TextComponent) -> Unit) {
         player.sendMessage(message)
         PromptListener.prompts[player.uniqueId] = callback
+    }
+
+    fun broadcastChat(plugin: MelodiaPlugin, stringId: String, vararg args: Any) {
+        Bukkit.getOnlinePlayers().forEach { player ->
+            player.sendMessage { legacyToMiniMessage(translate(plugin, stringId, player.locale(), *args)).fromMiniMessage() }
+        }
     }
 
 }

@@ -15,7 +15,7 @@ abstract class MelodiaSavingManager<T: MelodiaItem> : MelodiaManager<T>() {
 
     companion object {
         @OptIn(ExperimentalSerializationApi::class)
-        val serializer = Json { prettyPrint = true; prettyPrintIndent = "\t"; allowTrailingComma = true }
+        val serializer = Json { prettyPrint = true; prettyPrintIndent = "\t"; allowTrailingComma = true; ignoreUnknownKeys = true }
     }
 
     /**

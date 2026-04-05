@@ -29,10 +29,8 @@ class Melodia : MelodiaPlugin() {
         internal lateinit var melodiaInstance: Melodia
     }
 
-    override fun onEnable() {
+    init {
         melodiaInstance = this
-
-        super.onEnable()
     }
 
 }
