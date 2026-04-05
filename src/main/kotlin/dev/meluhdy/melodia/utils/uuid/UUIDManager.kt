@@ -131,7 +131,7 @@ object UUIDManager: MelodiaSavingManager<UUIDNameConverter>(), Listener {
             .name
     }
 
-    override fun getFile(obj: UUIDNameConverter): File = File(Melodia.melodiaInstance.dataFolder, "${obj.uuid}.json")
+    override fun getFile(obj: UUIDNameConverter): File = File(baseFolder, "${obj.uuid}.json")
 
     override fun loadSaves(): Array<File> = File(baseFolder).listFiles() ?: arrayOf()
 

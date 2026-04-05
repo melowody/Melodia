@@ -21,8 +21,13 @@ abstract class MelodiaSavingManager<T: MelodiaItem> : MelodiaManager<T>() {
     /**
      * Saves the objects to individual files
      */
-    fun save() {
+    open fun save() {
+        loadSaves().forEach {
+            if (!this.exists(deserializeObject(serializer.decodeFromString<JsonElement>(it.readText())).uuid))
+                it.delete()
+        }
         getAll().forEach {
+            if (!shouldSave(it)) return
             Melodia.melodiaInstance.logger.trace("Saving ${it.uuid} in Manager ${this::class.simpleName}")
             try {
                 val file = getFile(it)
@@ -39,7 +44,7 @@ abstract class MelodiaSavingManager<T: MelodiaItem> : MelodiaManager<T>() {
     /**
      * Loads all the files into objects
      */
-    fun load() {
+    open fun load() {
         loadSaves().forEach {
             Melodia.melodiaInstance.logger.trace("Loading item ${it.name} in Manager ${this::class.simpleName}")
             add(deserializeObject(serializer.decodeFromString<JsonElement>(it.readText())))
@@ -71,5 +76,7 @@ abstract class MelodiaSavingManager<T: MelodiaItem> : MelodiaManager<T>() {
      * @param jsonElement The JsonElement to deserialize
      */
     abstract fun deserializeObject(jsonElement: JsonElement): T
+
+    open fun shouldSave(item: T): Boolean = true
 
 }

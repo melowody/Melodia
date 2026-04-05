@@ -2,6 +2,7 @@ package dev.meluhdy.melodia.command
 
 import com.mojang.brigadier.Command
 import com.mojang.brigadier.builder.LiteralArgumentBuilder
+import com.mojang.brigadier.builder.RequiredArgumentBuilder
 import com.mojang.brigadier.context.CommandContext
 import dev.meluhdy.melodia.Melodia
 import dev.meluhdy.melodia.annotation.RequirePerm
@@ -20,7 +21,9 @@ abstract class MelodiaCommand(literal: String) : LiteralArgumentBuilder<CommandS
     /**
      * A list of any child commands this command has (i.e. the "bar" in "/foo bar")
      */
-    abstract val children: ArrayList<MelodiaCommand>
+    abstract val children: List<MelodiaCommand>
+
+    abstract val arguments: List<RequiredArgumentBuilder<CommandSourceStack, *>>
 
     fun register() {
         children.forEach { command ->
@@ -28,10 +31,29 @@ abstract class MelodiaCommand(literal: String) : LiteralArgumentBuilder<CommandS
             this.then(command)
         }
 
-        this.executes { ctx ->
+        if (arguments.isEmpty()) {
+            this.executes { ctx ->
+                if (!checkAnnotations(ctx)) return@executes Command.SINGLE_SUCCESS
+                return@executes onCommand(ctx)
+            }
+            return
+        }
+
+        val head = arguments.first()
+        var curr = head
+
+        for (i in 1..<arguments.size) {
+            val next = arguments[i]
+            curr.then(next)
+            curr = next
+        }
+
+        curr.executes { ctx ->
             if (!checkAnnotations(ctx)) return@executes Command.SINGLE_SUCCESS
             return@executes onCommand(ctx)
         }
+
+        this.then(head)
     }
 
     private fun checkAnnotations(ctx: CommandContext<CommandSourceStack>): Boolean {
@@ -48,7 +70,7 @@ abstract class MelodiaCommand(literal: String) : LiteralArgumentBuilder<CommandS
                     }
                 }
                 is RequirePerm -> {
-                    if (sender.hasPermission(annotation.perm)) {
+                    if (!sender.hasPermission(annotation.perm)) {
                         sender.sendPlainMessage("You don't have permission to use this command!")
                         return false
                     }
