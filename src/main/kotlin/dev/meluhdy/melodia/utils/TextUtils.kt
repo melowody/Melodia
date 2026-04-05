@@ -21,7 +21,7 @@ data class TranslatedString(val id: String, val args: Array<Any>)
 
 internal class TranslationBundleControl(val plugin: MelodiaPlugin) : ResourceBundle.Control() {
 
-    override fun toBundleName(baseName: String, locale: Locale): String = "${baseName.replace("/", ".")}.${locale.language.toString().lowercase()}"
+    override fun toBundleName(baseName: String, locale: Locale): String = if (locale == Locale.ROOT) baseName else "${baseName}_${locale.language.lowercase()}"
 
     override fun getFallbackLocale(baseName: String, locale: Locale): Locale? = if (locale == plugin.translationFolder.defaultLang) null else plugin.translationFolder.defaultLang
 
@@ -32,11 +32,11 @@ internal class TranslationBundleControl(val plugin: MelodiaPlugin) : ResourceBun
         loader: ClassLoader,
         reload: Boolean
     ): ResourceBundle? {
-        val bundleName = toBundleName(baseName, locale)
-        val resourceName = toResourceName(bundleName, "properties")
+        val resourceName = "$baseName/${locale.language.lowercase()}.properties"
+        Melodia.melodiaInstance.logger.debug("Attempting to load bundle from: $resourceName w/ plugin $plugin")
 
         val stream = plugin.getResource(resourceName) ?: return null
-        return stream.use { PropertyResourceBundle(it) }
+        return stream.use { PropertyResourceBundle(it.reader(Charsets.UTF_8)) }
     }
 
 }
@@ -61,8 +61,7 @@ object TextUtils {
      */
     fun legacyToMiniMessage(message: String, identifier: Char = '&'): String = MiniMessage.miniMessage().serialize(LegacyComponentSerializer.legacy(identifier).deserialize(message))
 
-    fun getBundle(plugin: MelodiaPlugin, lang: Locale): ResourceBundle = ResourceBundle.getBundle(plugin.translationFolder.folderName, lang,
-        TranslationBundleControl(plugin))
+    fun getBundle(plugin: MelodiaPlugin, lang: Locale): ResourceBundle = ResourceBundle.getBundle(plugin.translationFolder.folderName, lang, plugin::class.java.classLoader, TranslationBundleControl(plugin))
 
     private fun getTranslationString(plugin: MelodiaPlugin, id: String, lang: Locale): String = getBundle(plugin, lang).getString(id)
 
