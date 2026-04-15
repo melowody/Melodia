@@ -18,6 +18,7 @@ abstract class MelodiaManager<T: MelodiaItem> {
      */
     fun add(t: T) {
         delete(t.uuid)
+        delete { t == it }
         objects.add(t)
     }
 

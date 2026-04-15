@@ -43,33 +43,22 @@ abstract class MelodiaGUI(val plugin: MelodiaPlugin, val p: Player, val prevGUI:
      */
     val inv: Inventory
     get() = run {
-        Melodia.melodiaInstance.logger.debug("Accessing Inventory")
         if (_inv == null) { _inv = Melodia.melodiaInstance.server.createInventory(this, rows * 9, title) }
         _inv!!
-    }
-
-    companion object {
-        private var registered: ArrayList<KClass<out MelodiaGUI>> = arrayListOf()
-    }
-
-    init {
-        if (!registered.contains(this::class)) {
-            registered.add(this::class)
-            Bukkit.getPluginManager().registerEvents(this, plugin)
-        }
     }
 
     /**
      * A list of clickable items to put into the GUI
      */
-    protected abstract val melodiaItems: ArrayList<MelodiaGUIItem>
+    abstract val melodiaItems: ArrayList<MelodiaGUIItem>
 
     /**
      * Initializes the inventory and opens it for the given Player
      */
     open fun open() {
         Melodia.melodiaInstance.logger.debug("${p.name} is opening ${this::class.simpleName}")
-        initializeItems()
+        this.initializeItems()
+        this.p.closeInventory()
         this.p.openInventory(this.inv)
     }
 
@@ -98,34 +87,11 @@ abstract class MelodiaGUI(val plugin: MelodiaPlugin, val p: Player, val prevGUI:
     }
 
     /**
-     * The function that actually takes in the InventoryClickEvent and runs the correct MelodiaGUIItem (if it exists).
-     * If you override this function you MUST put `@EventHandler(priority = EventPriority.HIGH)` before the function is defined
-     *
-     * @param e The InventoryClickEvent passed by Bukkit
-     */
-    @EventHandler(priority = EventPriority.HIGH)
-    fun handleClick(e: InventoryClickEvent) {
-        if (e.clickedInventory == null || e.clickedInventory!!.holder == null || e.clickedInventory!!.holder!!::class != this::class) return
-        Melodia.melodiaInstance.logger.debug("${p.name} clicked ${e.rawSlot} in ${this::class.simpleName}")
-        if (e.rawSlot < this.inv.size) {
-            e.isCancelled = true
-        }
-        melodiaItems.firstOrNull { item -> item.position == e.rawSlot }?.clickFunc?.accept(e)
-        onInventoryClick(e)
-    }
-
-    @EventHandler(priority = EventPriority.HIGH)
-    fun handleDrag(e: InventoryDragEvent) {
-        if (e.inventory.holder == null || e.inventory.holder!!::class != this::class) return
-        e.isCancelled = true
-    }
-
-    /**
      * Any other GUI logic to be run when the player clicks in the GUI
      *
      * @param e The InventoryClickEvent passed by Bukkit
      */
-    protected abstract fun onInventoryClick(e: InventoryClickEvent)
+    abstract fun onInventoryClick(e: InventoryClickEvent)
 
     override fun getInventory(): Inventory = inv
 

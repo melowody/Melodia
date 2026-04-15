@@ -50,6 +50,8 @@ abstract class MelodiaPaginationGUI<T>(plugin: MelodiaPlugin, p: Player, pg: Mel
             val list: ArrayList<MelodiaGUIItem> = objectsOnPage.withIndex()
                 .map { (index, item) -> toItem(index, item) }.toCollection(ArrayList())
 
+            Melodia.melodiaInstance.logger.debug("Total Objects: ${this.objects.size} | Objects On Page: ${this.objectsOnPage.size} | List Size: ${list.size}")
+
             if (this.page == 0)
                 list.add(MelodiaGUIItem(
                     (rows - 1) * 9,

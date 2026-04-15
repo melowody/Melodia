@@ -42,15 +42,19 @@ abstract class MelodiaCommand(literal: String) : LiteralArgumentBuilder<CommandS
         val head = arguments.first()
         var curr = head
 
-        for (i in 1..<arguments.size) {
-            val next = arguments[i]
-            curr.then(next)
-            curr = next
-        }
-
         curr.executes { ctx ->
             if (!checkAnnotations(ctx)) return@executes Command.SINGLE_SUCCESS
             return@executes onCommand(ctx)
+        }
+
+        for (i in 0..<arguments.size) {
+            val next = arguments[i]
+            curr.then(next)
+            curr = next
+            curr.executes { ctx ->
+                if (!checkAnnotations(ctx)) return@executes Command.SINGLE_SUCCESS
+                return@executes onCommand(ctx)
+            }
         }
 
         this.then(head)

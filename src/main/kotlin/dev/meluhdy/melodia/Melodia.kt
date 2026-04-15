@@ -1,6 +1,7 @@
 package dev.meluhdy.melodia
 
 import dev.meluhdy.melodia.command.MelodiaCommand
+import dev.meluhdy.melodia.listener.GUIListener
 import dev.meluhdy.melodia.listener.PromptListener
 import dev.meluhdy.melodia.manager.MelodiaSavingManager
 import dev.meluhdy.melodia.utils.ConsoleLogger
@@ -17,7 +18,8 @@ class Melodia : MelodiaPlugin() {
     override val resourceFiles: Array<String> = arrayOf()
     override val listeners: Array<Listener> = arrayOf(
         UUIDManager,
-        PromptListener
+        PromptListener,
+        GUIListener
     )
     override val translationFolder: TranslationFolder = TranslationFolder("", Locale.ENGLISH)
     override val logger: ConsoleLogger = ConsoleLogger("Melodia", LoggingUtils.ConsoleLevel.DEBUG)
