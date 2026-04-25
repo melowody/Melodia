@@ -12,8 +12,6 @@ object GUIListener : Listener {
     @EventHandler(priority = EventPriority.HIGH)
     fun onInventoryClick(e: InventoryClickEvent) {
 
-
-
         val holder = e.inventory.holder
 
         if (holder !is MelodiaGUI) return

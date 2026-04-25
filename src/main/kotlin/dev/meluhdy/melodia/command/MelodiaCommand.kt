@@ -1,6 +1,8 @@
 package dev.meluhdy.melodia.command
 
 import com.mojang.brigadier.Command
+import com.mojang.brigadier.arguments.ArgumentType
+import com.mojang.brigadier.builder.ArgumentBuilder
 import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import com.mojang.brigadier.builder.RequiredArgumentBuilder
 import com.mojang.brigadier.context.CommandContext
@@ -8,14 +10,25 @@ import dev.meluhdy.melodia.Melodia
 import dev.meluhdy.melodia.annotation.RequirePerm
 import dev.meluhdy.melodia.annotation.UserOnly
 import io.papermc.paper.command.brigadier.CommandSourceStack
+import io.papermc.paper.command.brigadier.Commands
 import org.bukkit.entity.Player
+import java.util.function.Consumer
+import kotlin.reflect.KAnnotatedElement
+import kotlin.reflect.KFunction
+
+data class MelodiaArgument<T : Any>(val name: String, val type: ArgumentType<T>, val executor: KFunction<Int>) {
+
+    fun toArgument(): RequiredArgumentBuilder<CommandSourceStack, T> {
+        return Commands.argument(name, type)
+    }
+
+}
 
 /**
  * A wrapper for commands to make them easier to build, and allows for the added annotations to be used
  *
  * @param literal The name of the (sub-)command, i.e. "test" for "/test"
  */
-@Suppress("UnstableApiUsage")
 abstract class MelodiaCommand(literal: String) : LiteralArgumentBuilder<CommandSourceStack>(literal) {
 
     /**
@@ -23,47 +36,34 @@ abstract class MelodiaCommand(literal: String) : LiteralArgumentBuilder<CommandS
      */
     abstract val children: List<MelodiaCommand>
 
-    abstract val arguments: List<RequiredArgumentBuilder<CommandSourceStack, *>>
+    abstract val arguments: List<MelodiaArgument<*>>
 
-    fun register() {
+    internal fun register() {
         children.forEach { command ->
             command.register()
             this.then(command)
         }
 
-        if (arguments.isEmpty()) {
-            this.executes { ctx ->
-                if (!checkAnnotations(ctx)) return@executes Command.SINGLE_SUCCESS
-                return@executes onCommand(ctx)
-            }
-            return
+        this.executes { ctx -> return@executes if (checkAnnotations(ctx, this::noArgs)) this.noArgs(ctx) else Command.SINGLE_SUCCESS }
+
+        if (arguments.isEmpty()) return
+
+        var curr: ArgumentBuilder<CommandSourceStack, *> = this
+
+        for (argument in arguments) {
+
+            val arg = argument.toArgument()
+            arg.executes { ctx -> return@executes if (checkAnnotations(ctx, argument.executor)) argument.executor.call(ctx) else Command.SINGLE_SUCCESS }
+
+            curr.then(arg)
+            curr = arg
+
         }
-
-        val head = arguments.first()
-        var curr = head
-
-        curr.executes { ctx ->
-            if (!checkAnnotations(ctx)) return@executes Command.SINGLE_SUCCESS
-            return@executes onCommand(ctx)
-        }
-
-        for (i in 0..<arguments.size) {
-            val next = arguments[i]
-            curr.then(next)
-            curr = next
-            curr.executes { ctx ->
-                if (!checkAnnotations(ctx)) return@executes Command.SINGLE_SUCCESS
-                return@executes onCommand(ctx)
-            }
-        }
-
-        this.then(head)
     }
 
-    private fun checkAnnotations(ctx: CommandContext<CommandSourceStack>): Boolean {
-        Melodia.melodiaInstance.logger.trace("Checking Annotations for ${this::class.simpleName}")
-        val safeCommandMethod = this::class.java.getDeclaredMethod("onCommand", CommandContext::class.java)
-        safeCommandMethod.annotations.forEach { annotation ->
+    private fun checkAnnotations(ctx: CommandContext<CommandSourceStack>, function: KFunction<*>): Boolean {
+        Melodia.melodiaInstance.logger.trace("Checking Annotations for ${function.name}")
+        function.annotations.forEach { annotation ->
             Melodia.melodiaInstance.logger.debug("Found Annotation: ${annotation::class.simpleName}")
             val sender = ctx.source.sender
             when (annotation) {
@@ -89,6 +89,6 @@ abstract class MelodiaCommand(literal: String) : LiteralArgumentBuilder<CommandS
      *
      * @param context The CommandContext given by PaperSpigot and Brigadier
      */
-    abstract fun onCommand(context: CommandContext<CommandSourceStack>): Int
+    abstract fun noArgs(context: CommandContext<CommandSourceStack>): Int
 
 }
