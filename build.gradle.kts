@@ -1,8 +1,9 @@
 plugins {
-    kotlin("jvm") version "2.2.0-Beta1"
-    id("com.gradleup.shadow") version "8.3.0"
-    id("xyz.jpenilla.run-paper") version "2.3.1"
+    kotlin("jvm") version "2.4.0-Beta1"
+    id("com.gradleup.shadow") version "9.4.1"
+    id("xyz.jpenilla.run-paper") version "3.0.2"
     kotlin("plugin.serialization") version "2.1.20"
+    `maven-publish`
 }
 
 group = "dev.meluhdy"
@@ -20,9 +21,7 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:2.2.0-Beta1")
 }
 
 tasks {
@@ -34,20 +33,33 @@ tasks {
     }
 }
 
-val targetJavaVersion = 21
+val targetJavaVersion = 25
 kotlin {
     jvmToolchain(targetJavaVersion)
 }
 
 tasks.build {
     dependsOn("shadowJar")
+    finalizedBy(tasks.publishToMavenLocal)
 }
 
 tasks.processResources {
-    val props = mapOf("version" to version)
+    val props = mapOf("version" to version, "description" to description)
     inputs.properties(props)
     filteringCharset = "UTF-8"
     filesMatching("plugin.yml") {
         expand(props)
+    }
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = project.group.toString()
+            artifactId = "melodia"
+            version = project.version.toString()
+
+            from(components["shadow"])
+        }
     }
 }

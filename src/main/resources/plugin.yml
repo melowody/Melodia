@@ -1,5 +1,6 @@
 name: Melodia
-version: '1.0-SNAPSHOT'
+version: '$version'
+description: '$description'
 main: dev.meluhdy.melodia.Melodia
 api-version: '1.21'
 load: POSTWORLD
