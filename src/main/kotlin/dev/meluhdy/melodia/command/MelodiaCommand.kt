@@ -6,17 +6,20 @@ import com.mojang.brigadier.builder.ArgumentBuilder
 import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import com.mojang.brigadier.builder.RequiredArgumentBuilder
 import com.mojang.brigadier.context.CommandContext
+import com.mojang.brigadier.suggestion.Suggestions
+import com.mojang.brigadier.suggestion.SuggestionsBuilder
 import dev.meluhdy.melodia.Melodia
 import dev.meluhdy.melodia.annotation.RequirePerm
 import dev.meluhdy.melodia.annotation.UserOnly
 import io.papermc.paper.command.brigadier.CommandSourceStack
 import io.papermc.paper.command.brigadier.Commands
 import org.bukkit.entity.Player
+import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 import kotlin.reflect.KAnnotatedElement
 import kotlin.reflect.KFunction
 
-data class MelodiaArgument<T : Any>(val name: String, val type: ArgumentType<T>, val executor: KFunction<Int>) {
+data class MelodiaArgument<T : Any>(val name: String, val type: ArgumentType<T>, val executor: KFunction<Int>, val suggestions: ((context: CommandContext<CommandSourceStack>, builder: SuggestionsBuilder) -> CompletableFuture<Suggestions>)? = null) {
 
     fun toArgument(): RequiredArgumentBuilder<CommandSourceStack, T> {
         return Commands.argument(name, type)
@@ -53,6 +56,7 @@ abstract class MelodiaCommand(literal: String) : LiteralArgumentBuilder<CommandS
         for (argument in arguments) {
 
             val arg = argument.toArgument()
+            argument.suggestions?.let { arg.suggests(it) }
             arg.executes { ctx -> return@executes if (checkAnnotations(ctx, argument.executor)) argument.executor.call(ctx) else Command.SINGLE_SUCCESS }
 
             curr.then(arg)
