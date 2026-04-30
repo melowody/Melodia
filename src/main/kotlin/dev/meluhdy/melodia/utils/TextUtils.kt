@@ -123,4 +123,12 @@ object TextUtils {
         }
     }
 
+    fun broadcastChat(component: Component) {
+        Bukkit.getOnlinePlayers().forEach { player ->
+            player.sendMessage(component)
+        }
+    }
+
+    fun broadcastChat(string: String) = this.broadcastChat(string.fromMiniMessage())
+
 }
