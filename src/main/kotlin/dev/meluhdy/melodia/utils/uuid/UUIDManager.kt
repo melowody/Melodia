@@ -96,7 +96,7 @@ object UUIDManager: MelodiaSavingManager<UUIDNameConverter>(), Listener {
      * @param name The name of the player to look up.
      */
     fun getUUID(name: String): UUID {
-        return getOrCreate({ item -> item.name.lowercase() == name.lowercase() }) { getFromName(name) }
+        return getOrCreate({ item -> item.name.equals(name, ignoreCase = true) }) { getFromName(name) }
             .apply { if (isTimestampOld()) getFromName(name)  }
             .uuid
     }

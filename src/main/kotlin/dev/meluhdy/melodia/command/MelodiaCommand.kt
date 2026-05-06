@@ -11,18 +11,23 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder
 import dev.meluhdy.melodia.Melodia
 import dev.meluhdy.melodia.annotation.RequirePerm
 import dev.meluhdy.melodia.annotation.UserOnly
+import dev.meluhdy.melodia.command.MelodiaCommand.Companion.checkAnnotations
 import io.papermc.paper.command.brigadier.CommandSourceStack
 import io.papermc.paper.command.brigadier.Commands
 import org.bukkit.entity.Player
 import java.util.concurrent.CompletableFuture
-import java.util.function.Consumer
-import kotlin.reflect.KAnnotatedElement
 import kotlin.reflect.KFunction
 
 data class MelodiaArgument<T : Any>(val name: String, val type: ArgumentType<T>, val executor: KFunction<Int>, val suggestions: ((context: CommandContext<CommandSourceStack>, builder: SuggestionsBuilder) -> CompletableFuture<Suggestions>)? = null) {
 
     fun toArgument(): RequiredArgumentBuilder<CommandSourceStack, T> {
-        return Commands.argument(name, type)
+        val out = Commands.argument(name, type)
+        this.suggestions?.let { out.suggests(it) }
+        out.executes { ctx ->
+            Melodia.melodiaInstance.logger.debug("Attempting to execute $name")
+            return@executes if (checkAnnotations(ctx, this.executor)) this.executor.call(ctx) else 0
+        }
+        return out
     }
 
 }
@@ -34,6 +39,31 @@ data class MelodiaArgument<T : Any>(val name: String, val type: ArgumentType<T>,
  */
 abstract class MelodiaCommand(literal: String) : LiteralArgumentBuilder<CommandSourceStack>(literal) {
 
+    companion object {
+        fun checkAnnotations(ctx: CommandContext<CommandSourceStack>, function: KFunction<*>): Boolean {
+            Melodia.melodiaInstance.logger.trace("Checking Annotations for ${function.name}")
+            function.annotations.forEach { annotation ->
+                Melodia.melodiaInstance.logger.debug("Found Annotation: ${annotation::class.simpleName}")
+                val sender = ctx.source.sender
+                when (annotation) {
+                    is UserOnly -> {
+                        if (sender !is Player) {
+                            sender.sendPlainMessage("You must be a player to execute this command!")
+                            return false
+                        }
+                    }
+                    is RequirePerm -> {
+                        if (!sender.hasPermission(annotation.perm)) {
+                            sender.sendPlainMessage("You don't have permission to use this command!")
+                            return false
+                        }
+                    }
+                }
+            }
+            return true
+        }
+    }
+
     /**
      * A list of any child commands this command has (i.e. the "bar" in "/foo bar")
      */
@@ -41,51 +71,27 @@ abstract class MelodiaCommand(literal: String) : LiteralArgumentBuilder<CommandS
 
     abstract val arguments: List<MelodiaArgument<*>>
 
-    internal fun register() {
+    open fun register() {
         children.forEach { command ->
             command.register()
             this.then(command)
         }
 
-        this.executes { ctx -> return@executes if (checkAnnotations(ctx, this::noArgs)) this.noArgs(ctx) else Command.SINGLE_SUCCESS }
+        this.executes { ctx -> return@executes if (checkAnnotations(ctx, this::noArgs)) this.noArgs(ctx) else 0 }
 
         if (arguments.isEmpty()) return
 
-        var curr: ArgumentBuilder<CommandSourceStack, *> = this
+        var curr: ArgumentBuilder<CommandSourceStack, *>? = null
 
-        for (argument in arguments) {
+        for (argument in arguments.reversed()) {
 
             val arg = argument.toArgument()
-            argument.suggestions?.let { arg.suggests(it) }
-            arg.executes { ctx -> return@executes if (checkAnnotations(ctx, argument.executor)) argument.executor.call(ctx) else Command.SINGLE_SUCCESS }
-
-            curr.then(arg)
+            curr?.let { arg.then(it) }
             curr = arg
 
         }
-    }
 
-    private fun checkAnnotations(ctx: CommandContext<CommandSourceStack>, function: KFunction<*>): Boolean {
-        Melodia.melodiaInstance.logger.trace("Checking Annotations for ${function.name}")
-        function.annotations.forEach { annotation ->
-            Melodia.melodiaInstance.logger.debug("Found Annotation: ${annotation::class.simpleName}")
-            val sender = ctx.source.sender
-            when (annotation) {
-                is UserOnly -> {
-                    if (sender !is Player) {
-                        sender.sendPlainMessage("You must be a player to execute this command!")
-                        return false
-                    }
-                }
-                is RequirePerm -> {
-                    if (!sender.hasPermission(annotation.perm)) {
-                        sender.sendPlainMessage("You don't have permission to use this command!")
-                        return false
-                    }
-                }
-            }
-        }
-        return true
+        curr?.let { this.then(it) }s
     }
 
     /**

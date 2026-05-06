@@ -41,9 +41,17 @@ internal class TranslationBundleControl(val plugin: MelodiaPlugin) : ResourceBun
 
 }
 
-fun String.fromMiniMessage(): Component = MiniMessage.miniMessage().deserialize(this)
+fun String.legacyToMiniMessage(identifier: Char = '&'): String = TextUtils.mm.serialize(LegacyComponentSerializer.legacy(identifier).deserialize(this))
 
-fun Component.toMiniMessage(): String = MiniMessage.miniMessage().serialize(this)
+fun String.miniToLegacyMessage(identifier: Char = '&'): String = LegacyComponentSerializer.legacy(identifier).serialize(MiniMessage.miniMessage().deserialize(this))
+
+fun String.fromMiniMessage(): Component = TextUtils.mm.deserialize(this)
+
+fun Component.toMiniMessage(): String = TextUtils.mm.serialize(this)
+
+fun String.fromLegacyMessage(identifier: Char = '&'): Component = LegacyComponentSerializer.legacy(identifier).deserialize(this)
+
+fun Component.toLegacyMessage(identifier: Char = '&'): String = LegacyComponentSerializer.legacy(identifier).serialize(this)
 
 /**
  * A collection of functions to deal with text and chat messages
@@ -51,15 +59,7 @@ fun Component.toMiniMessage(): String = MiniMessage.miniMessage().serialize(this
 @Suppress("unused")
 object TextUtils {
 
-    /**
-     * Colors a string using the legacy color codes.
-     *
-     * @param message The message to colorize.
-     * @param identifier The identifier for the color codes. Default: &
-     *
-     * @return A TextComponent colored using the inputted color codes.
-     */
-    fun legacyToMiniMessage(message: String, identifier: Char = '&'): String = MiniMessage.miniMessage().serialize(LegacyComponentSerializer.legacy(identifier).deserialize(message))
+    internal val mm: MiniMessage = MiniMessage.miniMessage()
 
     fun getBundle(plugin: MelodiaPlugin, lang: Locale): ResourceBundle = ResourceBundle.getBundle(plugin.translationFolder.folderName, lang, plugin::class.java.classLoader, TranslationBundleControl(plugin))
 
@@ -92,9 +92,9 @@ object TextUtils {
 
     }
 
-    fun translateList(plugin: MelodiaPlugin, id: String, lang: Locale, vararg args: Any): ArrayList<String> {
-        Melodia.melodiaInstance.logger.debug("Translating list in ${plugin::class.simpleName} into ${lang.language} with ID $id and args ${args.joinToString(", ")}")
-        val out = arrayListOf<String>()
+    fun getTranslatedStringList(plugin: MelodiaPlugin, id: String, lang: Locale, vararg args: Any): ArrayList<TranslatedString> {
+        Melodia.melodiaInstance.logger.debug("Getting list of translation strings for id $id in plugin ${plugin::class.simpleName}")
+        val out = arrayListOf<TranslatedString>()
         val bundle = getBundle(plugin, lang)
         var index = 0
 
@@ -104,12 +104,17 @@ object TextUtils {
 
             if (!bundle.containsKey(key)) break
 
-            out.add(translate(plugin, key, lang, *args))
+            out.add(TranslatedString(key, arrayOf(*args)))
 
             index++
         }
 
         return out
+    }
+
+    fun translateList(plugin: MelodiaPlugin, id: String, lang: Locale, vararg args: Any): List<String> {
+        Melodia.melodiaInstance.logger.debug("Translating list in ${plugin::class.simpleName} into ${lang.language} with ID $id and args ${args.joinToString(", ")}")
+        return this.getTranslatedStringList(plugin, id, lang, *args).map { ts -> translate(plugin, ts.id, lang, *ts.args) }
     }
 
     fun prompt(message: TextComponent, player: Player, callback: (TextComponent) -> Unit) {
@@ -119,7 +124,7 @@ object TextUtils {
 
     fun broadcastChat(plugin: MelodiaPlugin, stringId: String, vararg args: Any) {
         Bukkit.getOnlinePlayers().forEach { player ->
-            player.sendMessage { legacyToMiniMessage(translate(plugin, stringId, player.locale(), *args)).fromMiniMessage() }
+            player.sendMessage { translate(plugin, stringId, player.locale(), *args).fromLegacyMessage() }
         }
     }
 
