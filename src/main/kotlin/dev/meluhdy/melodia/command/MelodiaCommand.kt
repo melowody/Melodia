@@ -91,7 +91,7 @@ abstract class MelodiaCommand(literal: String) : LiteralArgumentBuilder<CommandS
 
         }
 
-        curr?.let { this.then(it) }s
+        curr?.let { this.then(it) }
     }
 
     /**
