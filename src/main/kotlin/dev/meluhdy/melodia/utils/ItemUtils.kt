@@ -12,7 +12,6 @@ import java.net.URI
 import java.net.URL
 import java.util.UUID
 
-@Suppress("unused")
 object ItemUtils {
 
     private fun getProfile(url: String) : PlayerProfile {

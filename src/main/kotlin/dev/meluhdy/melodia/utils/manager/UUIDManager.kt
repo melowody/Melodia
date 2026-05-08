@@ -1,17 +1,11 @@
-package dev.meluhdy.melodia.utils.uuid
+package dev.meluhdy.melodia.utils.manager
 
 import dev.meluhdy.melodia.Melodia
 import dev.meluhdy.melodia.manager.MelodiaItem
 import dev.meluhdy.melodia.manager.MelodiaSavingManager
 import dev.meluhdy.melodia.misc.serialization.MelodiaSerializer
 import dev.meluhdy.melodia.misc.serialization.SerializerElement
-import dev.meluhdy.melodia.misc.serialization.UUIDSerializer
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
-import kotlinx.serialization.descriptors.element
-import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
@@ -20,7 +14,6 @@ import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import java.io.File
 import java.net.URI
-import java.net.URL
 import java.util.UUID
 
 /**

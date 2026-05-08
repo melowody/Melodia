@@ -58,7 +58,6 @@ abstract class MelodiaGUI(val plugin: MelodiaPlugin, val p: Player, val prevGUI:
     open fun open() {
         Melodia.melodiaInstance.logger.debug("${p.name} is opening ${this::class.simpleName}")
         this.initializeItems()
-        this.p.closeInventory()
         this.p.openInventory(this.inv)
     }
 
