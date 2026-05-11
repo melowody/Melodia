@@ -7,7 +7,7 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import org.bukkit.inventory.ItemStack
 
-class ItemStackSerializer: KSerializer<ItemStack> {
+object ItemStackSerializer: KSerializer<ItemStack> {
 
     override val descriptor: SerialDescriptor = ByteArraySerializer().descriptor
 

@@ -65,7 +65,7 @@ object TextUtils {
 
     private fun getTranslationString(plugin: MelodiaPlugin, id: String, lang: Locale): String = getBundle(plugin, lang).getString(id)
 
-    private fun getTranslationComponent(plugin: MelodiaPlugin, id: String, lang: Locale): TextComponent = text(getTranslationString(plugin, id, lang))
+    private fun getTranslationComponent(plugin: MelodiaPlugin, id: String, lang: Locale): Component = text(getTranslationString(plugin, id, lang))
 
     /**
      * Translates a message and returns a MiniMessage

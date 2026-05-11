@@ -14,10 +14,10 @@ import org.bukkit.Location
 import org.bukkit.World
 import java.util.UUID
 
-class LocationSerializer: KSerializer<Location> {
+object LocationSerializer: KSerializer<Location> {
 
     override val descriptor: SerialDescriptor = buildClassSerialDescriptor(Location::class.qualifiedName!!) {
-        element("world", UUIDSerializer().descriptor)
+        element("world", UUIDSerializer.descriptor)
         element("x", Double.serializer().descriptor)
         element("y", Double.serializer().descriptor)
         element("z", Double.serializer().descriptor)
@@ -26,7 +26,7 @@ class LocationSerializer: KSerializer<Location> {
     }
 
     override fun serialize(encoder: Encoder, value: Location) = encoder.encodeStructure(descriptor) {
-        encodeSerializableElement<UUID>(descriptor, 0, UUIDSerializer(), value.world.uid)
+        encodeSerializableElement<UUID>(descriptor, 0, UUIDSerializer, value.world.uid)
         encodeDoubleElement(descriptor, 1, value.x)
         encodeDoubleElement(descriptor, 2, value.y)
         encodeDoubleElement(descriptor, 3, value.z)
