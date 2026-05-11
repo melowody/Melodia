@@ -2,6 +2,7 @@ package dev.meluhdy.melodia.manager
 
 import dev.meluhdy.melodia.Melodia
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import java.io.File
@@ -47,7 +48,12 @@ abstract class MelodiaSavingManager<T: MelodiaItem> : MelodiaManager<T>() {
     open fun load() {
         loadSaves().forEach {
             Melodia.melodiaInstance.logger.trace("Loading item ${it.name} in Manager ${this::class.simpleName}")
-            add(deserializeObject(serializer.decodeFromString<JsonElement>(it.readText())))
+            try {
+                add(deserializeObject(serializer.decodeFromString<JsonElement>(it.readText())))
+            } catch (e: SerializationException) {
+                Melodia.melodiaInstance.logger.error("Could not load item ${it.name} in ${this.javaClass.simpleName}")
+                e.printStackTrace()
+            }
         }
     }
 
