@@ -1,6 +1,7 @@
 package dev.meluhdy.melodia.listener
 
 import dev.meluhdy.melodia.gui.MelodiaGUI
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
@@ -21,6 +22,7 @@ object GUIListener : Listener {
             val item = holder.melodiaItems.firstOrNull { it.position == e.rawSlot }
             item?.clickFunc?.accept(e)
             holder.onInventoryClick(e)
+            (e.whoClicked as Player).updateInventory()
         }
     }
 

@@ -8,7 +8,7 @@ import java.util.UUID
 @Suppress("unused")
 abstract class MelodiaManager<T: MelodiaItem> {
 
-    private val objects: ArrayList<T> = arrayListOf()
+    internal val objects: MutableSet<T> = mutableSetOf()
 
     /**
      * Adds an object to the MelodiaManager.
@@ -58,7 +58,7 @@ abstract class MelodiaManager<T: MelodiaItem> {
     /**
      * Gets all the objects in the Manager
      */
-    fun getAll(): ArrayList<T> = ArrayList(objects)
+    fun getAll(): MutableSet<T> = objects.toMutableSet()
 
     /**
      * Updates the first object that fits the predicate, otherwise adds an object and updates it

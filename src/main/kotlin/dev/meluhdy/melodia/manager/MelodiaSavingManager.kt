@@ -19,6 +19,9 @@ abstract class MelodiaSavingManager<T: MelodiaItem> : MelodiaManager<T>() {
         val serializer = Json { prettyPrint = true; prettyPrintIndent = "\t"; allowTrailingComma = true; ignoreUnknownKeys = true }
     }
 
+    open val savingObjects
+        get() = objects
+
     /**
      * Saves the objects to individual files
      */
@@ -27,7 +30,7 @@ abstract class MelodiaSavingManager<T: MelodiaItem> : MelodiaManager<T>() {
             if (!this.exists(deserializeObject(serializer.decodeFromString<JsonElement>(it.readText())).uuid))
                 it.delete()
         }
-        getAll().forEach {
+        ArrayList(savingObjects).forEach {
             if (!shouldSave(it)) return
             Melodia.melodiaInstance.logger.trace("Saving ${it.uuid} in Manager ${this::class.simpleName}")
             try {
