@@ -41,7 +41,6 @@ abstract class MelodiaPlugin : JavaPlugin() {
 
     abstract val savingManagers: Array<MelodiaSavingManager<*>>
 
-    @Suppress("UnstableApiUsage")
     override fun onEnable() {
 
         logger.trace("Registering Commands...")

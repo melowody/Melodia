@@ -26,7 +26,7 @@ object LocationSerializer: KSerializer<Location> {
     }
 
     override fun serialize(encoder: Encoder, value: Location) = encoder.encodeStructure(descriptor) {
-        encodeSerializableElement<UUID>(descriptor, 0, UUIDSerializer, value.world.uid)
+        encodeSerializableElement(descriptor, 0, UUIDSerializer, value.world.uid)
         encodeDoubleElement(descriptor, 1, value.x)
         encodeDoubleElement(descriptor, 2, value.y)
         encodeDoubleElement(descriptor, 3, value.z)
@@ -38,8 +38,7 @@ object LocationSerializer: KSerializer<Location> {
         var world: World? = null; var x = 0.0; var y = 0.0; var z = 0.0; var yaw = 0.0f; var pitch = 0.0f
 
         while (true) {
-            val index = decodeElementIndex(descriptor)
-            when (index) {
+            when (val index = decodeElementIndex(descriptor)) {
                 0 -> world = Bukkit.getWorld(UUID.fromString(decodeStringElement(descriptor, index)))
                 1 -> x = decodeDoubleElement(descriptor, index)
                 2 -> y = decodeDoubleElement(descriptor, index)

@@ -10,19 +10,20 @@ import org.bukkit.inventory.meta.SkullMeta
 import java.net.MalformedURLException
 import java.net.URI
 import java.net.URL
+import java.security.InvalidParameterException
 import java.util.UUID
 
 object ItemUtils {
 
-    private fun getProfile(url: String) : PlayerProfile {
+    private fun getProfile(url: URI) : PlayerProfile {
         Melodia.melodiaInstance.logger.debug("Getting Profile from Url: $url")
         val profile = Bukkit.createProfile(UUID.randomUUID())
         val textures = profile.textures
         val urlObject: URL
         try {
-            urlObject = URI(url).toURL()
+            urlObject = url.toURL()
         } catch (e: MalformedURLException) {
-            Melodia.melodiaInstance.logger.error("Failed to load profile from Url: $url")
+            Melodia.melodiaInstance.logger.error("Failed to load profile from Url: $url", e)
             throw RuntimeException("Invalid URL", e)
         }
         textures.skin = urlObject
@@ -70,7 +71,8 @@ object ItemUtils {
         val item = ItemStack(Material.PLAYER_HEAD, count)
         if (skullUrl.isEmpty()) return modifyItem(item, title, *lore)
 
-        val profile = getProfile(skullUrl)
+        if (!skullUrl.startsWith("https://textures.minecraft.net")) throw InvalidParameterException("Invalid URL")
+        val profile = getProfile(URI(skullUrl))
         val meta = item.itemMeta as SkullMeta
         meta.playerProfile = profile
         item.itemMeta = meta

@@ -5,6 +5,7 @@ import dev.meluhdy.melodia.manager.MelodiaItem
 import dev.meluhdy.melodia.manager.MelodiaSavingManager
 import dev.meluhdy.melodia.misc.serialization.MelodiaSerializer
 import dev.meluhdy.melodia.misc.serialization.SerializerElement
+import dev.meluhdy.melodia.utils.FileUtils
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.jsonObject
@@ -14,6 +15,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import java.io.File
 import java.net.URI
+import java.security.InvalidParameterException
 import java.util.UUID
 
 /**
@@ -36,6 +38,8 @@ class UUIDNameConverter(uuid: UUID, val name: String, val timestamp: Long): Melo
 
 object UUIDNameConverterSerializer: MelodiaSerializer<UUIDNameConverter>() {
 
+    override fun getBuilder(): Builder<UUIDNameConverter> = UUIDNameConverterSerializerBuilder()
+
     class UUIDNameConverterSerializerBuilder: Builder<UUIDNameConverter>() {
 
         lateinit var name: String
@@ -45,10 +49,9 @@ object UUIDNameConverterSerializer: MelodiaSerializer<UUIDNameConverter>() {
 
     }
 
-    override val builder: Builder<UUIDNameConverter> = UUIDNameConverterSerializerBuilder()
     override val steps: Array<SerializerElement<*, UUIDNameConverter>> = arrayOf(
-        SerializerElement<String, UUIDNameConverter>("name", String.serializer(), { it.name }, { string, builder -> (builder as UUIDNameConverterSerializerBuilder).name = string }),
-        SerializerElement<Long, UUIDNameConverter>("timestamp", Long.serializer(), { it.timestamp }, { time, builder -> (builder as UUIDNameConverterSerializerBuilder).timestamp = time })
+        SerializerElement("name", String.serializer(), { it.name }, { string, builder -> (builder as UUIDNameConverterSerializerBuilder).name = string }),
+        SerializerElement("timestamp", Long.serializer(), { it.timestamp }, { time, builder -> (builder as UUIDNameConverterSerializerBuilder).timestamp = time })
     )
 
 }
@@ -58,8 +61,8 @@ object UUIDManager: MelodiaSavingManager<UUIDNameConverter>(), Listener {
     private const val NAME_TO_UUID: String = "https://api.mojang.com/users/profiles/minecraft/%s"
     private const val UUID_TO_NAME: String = "https://api.mojang.com/user/profile/%s"
 
-    val baseFolder
-        get() = "${Melodia.melodiaInstance.dataFolder.path}${File.separator}uuid"
+    val baseFolder: String
+        get() = FileUtils.getFile(Melodia.melodiaInstance, "uuid").absolutePath
 
     @EventHandler
     fun onPlayerJoin(event: PlayerJoinEvent) {
@@ -89,6 +92,9 @@ object UUIDManager: MelodiaSavingManager<UUIDNameConverter>(), Listener {
      * @param name The name of the player to look up.
      */
     fun getUUID(name: String): UUID {
+        if (!Regex("^[a-zA-Z0-9_]{1,16}$").matches(name)) {
+            throw InvalidParameterException("Not a valid username: $name")
+        }
         return getOrCreate({ item -> item.name.equals(name, ignoreCase = true) }) { getFromName(name) }
             .apply { if (isTimestampOld()) getFromName(name)  }
             .uuid

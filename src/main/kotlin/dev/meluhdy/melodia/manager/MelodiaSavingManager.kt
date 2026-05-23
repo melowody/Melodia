@@ -1,6 +1,8 @@
 package dev.meluhdy.melodia.manager
 
 import dev.meluhdy.melodia.Melodia
+import dev.meluhdy.melodia.utils.FileUtils
+import dev.meluhdy.melodia.utils.toIsoString
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
@@ -8,10 +10,12 @@ import kotlinx.serialization.json.JsonElement
 import java.io.File
 import java.io.IOException
 import java.nio.file.Files
+import java.util.Date
 
 /**
  * An extension of MelodiaManager with file saving capabilities
  */
+@Suppress("unused")
 abstract class MelodiaSavingManager<T: MelodiaItem> : MelodiaManager<T>() {
 
     companion object {
@@ -26,21 +30,30 @@ abstract class MelodiaSavingManager<T: MelodiaItem> : MelodiaManager<T>() {
      * Saves the objects to individual files
      */
     open fun save() {
-        loadSaves().forEach {
-            if (!this.exists(deserializeObject(serializer.decodeFromString<JsonElement>(it.readText())).uuid))
-                it.delete()
-        }
-        ArrayList(savingObjects).forEach {
-            if (!shouldSave(it)) return
-            Melodia.melodiaInstance.logger.trace("Saving ${it.uuid} in Manager ${this::class.simpleName}")
-            try {
-                val file = getFile(it)
-                Files.createDirectories(file.parentFile.toPath())
-                if (!file.exists()) file.createNewFile()
-                file.writeText(serializer.encodeToString(serializeObject(it)))
-            } catch (e: IOException) {
-                Melodia.melodiaInstance.logger.error("Could not save object ${it.uuid} in ${this.javaClass.simpleName}")
-                Melodia.melodiaInstance.logger.error(e.stackTraceToString())
+        synchronized(objects) {
+            val uuids = savingObjects.map { it.uuid }.toSet()
+            loadSaves().forEach {
+                try {
+                    val uuid = deserializeObject(serializer.decodeFromString<JsonElement>(it.readText())).uuid
+                    if (uuid !in uuids) it.delete()
+                } catch (e: Exception) {
+                    Melodia.melodiaInstance.logger.error("Could not process file ${it.name}", e)
+                }
+            }
+            ArrayList(savingObjects).forEach {
+                if (!shouldSave(it)) return@forEach
+                Melodia.melodiaInstance.logger.trace("Saving ${it.uuid} in Manager ${this::class.simpleName}")
+                try {
+                    val file = getFile(it)
+                    Files.createDirectories(file.parentFile.toPath())
+                    if (!file.exists()) file.createNewFile()
+
+                    val temp = File(file.parentFile, "${file.name}.tmp")
+                    temp.writeText(serializer.encodeToString(serializeObject(it)))
+                    temp.renameTo(file)
+                } catch (e: IOException) {
+                    Melodia.melodiaInstance.logger.error("Could not save object ${it.uuid} in ${this.javaClass.simpleName}", e)
+                }
             }
         }
     }
@@ -49,13 +62,15 @@ abstract class MelodiaSavingManager<T: MelodiaItem> : MelodiaManager<T>() {
      * Loads all the files into objects
      */
     open fun load() {
-        loadSaves().forEach {
-            Melodia.melodiaInstance.logger.trace("Loading item ${it.name} in Manager ${this::class.simpleName}")
-            try {
-                add(deserializeObject(serializer.decodeFromString<JsonElement>(it.readText())))
-            } catch (e: SerializationException) {
-                Melodia.melodiaInstance.logger.error("Could not load item ${it.name} in ${this.javaClass.simpleName}")
-                e.printStackTrace()
+        synchronized(objects) {
+            loadSaves().forEach {
+                Melodia.melodiaInstance.logger.trace("Loading item ${it.name} in Manager ${this::class.simpleName}")
+                try {
+                    add(deserializeObject(serializer.decodeFromString<JsonElement>(it.readText())))
+                } catch (e: SerializationException) {
+                    Melodia.melodiaInstance.logger.error("Could not load item ${it.name} in ${this.javaClass.simpleName}", e)
+                    it.renameTo(FileUtils.getFile(it.parentFile, ".corrupted", "${it.name}.${Date().toIsoString()}"))
+                }
             }
         }
     }

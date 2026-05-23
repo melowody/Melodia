@@ -17,9 +17,11 @@ abstract class MelodiaManager<T: MelodiaItem> {
      * @param t The object to be added
      */
     fun add(t: T) {
-        delete(t.uuid)
-        delete { t == it }
-        objects.add(t)
+        synchronized(objects) {
+            delete(t.uuid)
+            delete { t == it }
+            objects.add(t)
+        }
     }
 
     /**
@@ -27,7 +29,7 @@ abstract class MelodiaManager<T: MelodiaItem> {
      *
      * @param predicate The predicate to select the item by
      */
-    fun get(predicate: (T) -> Boolean): T? = objects.firstOrNull(predicate)
+    fun get(predicate: (T) -> Boolean): T? = synchronized(objects) { objects.firstOrNull(predicate) }
 
     /**
      * Gets an object by its UUID, otherwise null
@@ -43,8 +45,10 @@ abstract class MelodiaManager<T: MelodiaItem> {
      * @param factory The generator for the object if it can't be found
      */
     fun getOrCreate(predicate: (T) -> Boolean, factory: () -> T): T {
-        if (objects.none(predicate)) add(factory())
-        return get(predicate)!!
+        synchronized(objects) {
+            if (objects.none(predicate)) add(factory())
+            return get(predicate)!!
+        }
     }
 
     /**
@@ -58,7 +62,7 @@ abstract class MelodiaManager<T: MelodiaItem> {
     /**
      * Gets all the objects in the Manager
      */
-    fun getAll(): MutableSet<T> = objects.toMutableSet()
+    fun getAll(): MutableSet<T> = synchronized(objects) { objects.toMutableSet() }
 
     /**
      * Updates the first object that fits the predicate, otherwise adds an object and updates it
@@ -87,9 +91,7 @@ abstract class MelodiaManager<T: MelodiaItem> {
      *
      * @param predicate The predicate to filter the objects by
      */
-    fun delete(predicate: (T) -> Boolean) {
-        objects.removeIf(predicate)
-    }
+    fun delete(predicate: (T) -> Boolean) = synchronized(objects) { objects.removeIf(predicate) }
 
     /**
      * Deletes the object with the given UUID
@@ -110,6 +112,6 @@ abstract class MelodiaManager<T: MelodiaItem> {
      *
      * @param predicate The predicate to match with
      */
-    fun exists(predicate: (T) -> Boolean) = objects.any(predicate)
+    fun exists(predicate: (T) -> Boolean) = synchronized(objects) { objects.any(predicate) }
 
 }

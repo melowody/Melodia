@@ -2,6 +2,7 @@ package dev.meluhdy.melodia.misc.serialization
 
 import dev.meluhdy.melodia.manager.MelodiaItem
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
@@ -32,11 +33,12 @@ abstract class MelodiaSerializer<T: MelodiaItem>: KSerializer<T> {
             }
         }
 
-    abstract val builder: Builder<T>
+    abstract fun getBuilder(): Builder<T>
 
     abstract val steps: Array<SerializerElement<*, T>>
 
     override fun deserialize(decoder: Decoder): T = decoder.decodeStructure(descriptor) {
+        val builder = getBuilder()
         while (true) {
             val index = decodeElementIndex(descriptor)
             if (index == 0) builder.uuid = UUID.fromString(decodeStringElement(descriptor, index))
@@ -48,7 +50,7 @@ abstract class MelodiaSerializer<T: MelodiaItem>: KSerializer<T> {
             }
         }
         if (!builder.isUUIDInitialized()) {
-            builder.uuid = UUID.randomUUID()
+            throw SerializationException("Missing UUID field!")
         }
         builder.build()
     }

@@ -3,6 +3,7 @@ package dev.meluhdy.melodia.utils
 import dev.meluhdy.melodia.Melodia
 import dev.meluhdy.melodia.MelodiaPlugin
 import dev.meluhdy.melodia.listener.PromptListener
+import net.kyori.adventure.key.InvalidKeyException
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.Component.text
 import net.kyori.adventure.text.TextComponent
@@ -43,6 +44,7 @@ internal class TranslationBundleControl(val plugin: MelodiaPlugin) : ResourceBun
 
 fun String.legacyToMiniMessage(identifier: Char = '&'): String = TextUtils.mm.serialize(LegacyComponentSerializer.legacy(identifier).deserialize(this))
 
+@Suppress("UNUSED")
 fun String.miniToLegacyMessage(identifier: Char = '&'): String = LegacyComponentSerializer.legacy(identifier).serialize(MiniMessage.miniMessage().deserialize(this))
 
 fun String.fromMiniMessage(): Component = TextUtils.mm.deserialize(this)
@@ -63,7 +65,39 @@ object TextUtils {
 
     fun getBundle(plugin: MelodiaPlugin, lang: Locale): ResourceBundle = ResourceBundle.getBundle(plugin.translationFolder.folderName, lang, plugin::class.java.classLoader, TranslationBundleControl(plugin))
 
-    private fun getTranslationString(plugin: MelodiaPlugin, id: String, lang: Locale): String = getBundle(plugin, lang).getString(id)
+    private fun getTranslationString(plugin: MelodiaPlugin, id: String, lang: Locale): String {
+        val bundle = getBundle(plugin, lang)
+        val value = bundle.getString(id)
+
+        return getTranslationStringImpl(plugin, bundle, value, id, mutableSetOf(id))
+    }
+
+    private fun getTranslationStringImpl(
+        plugin: MelodiaPlugin,
+        bundle: ResourceBundle,
+        text: String,
+        orig: String,
+        visited: MutableSet<String>
+    ): String {
+        val re = Regex("\\$\\{(.+?)}")
+
+        return re.replace(text) {
+            val key = it.groupValues[1]
+
+            if (visited.contains(key)) {
+                Melodia.melodiaInstance.logger.error("Circular dependency in key \"$key\" in plugin ${plugin::class.java.simpleName}", java.security.InvalidKeyException(key))
+                return@replace it.value
+            }
+
+            if (!bundle.containsKey(key)) {
+                return@replace it.value
+            }
+
+            val raw = bundle.getString(key)
+            visited.add(key)
+            getTranslationStringImpl(plugin, bundle, raw, orig, visited)
+        }
+    }
 
     private fun getTranslationComponent(plugin: MelodiaPlugin, id: String, lang: Locale): Component = text(getTranslationString(plugin, id, lang))
 

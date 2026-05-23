@@ -2,22 +2,14 @@ package dev.meluhdy.melodia.gui
 
 import dev.meluhdy.melodia.Melodia
 import dev.meluhdy.melodia.MelodiaPlugin
-import dev.meluhdy.melodia.utils.TextUtils
-import dev.meluhdy.melodia.utils.TranslatedString
-import dev.meluhdy.melodia.utils.fromMiniMessage
 import net.kyori.adventure.text.TextComponent
-import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
-import org.bukkit.event.EventHandler
-import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
-import org.bukkit.event.inventory.InventoryDragEvent
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.InventoryHolder
 import org.bukkit.inventory.ItemStack
-import kotlin.reflect.KClass
 
 /**
  * A wrapper for GUIs to make them easier to initialize and handle
