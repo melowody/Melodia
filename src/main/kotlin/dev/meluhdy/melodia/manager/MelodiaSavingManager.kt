@@ -10,6 +10,7 @@ import kotlinx.serialization.json.JsonElement
 import java.io.File
 import java.io.IOException
 import java.nio.file.Files
+import java.nio.file.StandardCopyOption
 import java.util.Date
 
 /**
@@ -50,7 +51,7 @@ abstract class MelodiaSavingManager<T: MelodiaItem> : MelodiaManager<T>() {
 
                     val temp = File(file.parentFile, "${file.name}.tmp")
                     temp.writeText(serializer.encodeToString(serializeObject(it)))
-                    temp.renameTo(file)
+                    Files.move(temp.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE)
                 } catch (e: IOException) {
                     Melodia.melodiaInstance.logger.error("Could not save object ${it.uuid} in ${this.javaClass.simpleName}", e)
                 }

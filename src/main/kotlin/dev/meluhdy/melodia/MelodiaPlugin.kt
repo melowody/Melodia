@@ -43,39 +43,74 @@ abstract class MelodiaPlugin : JavaPlugin() {
 
     override fun onEnable() {
 
-        logger.trace("Registering Commands...")
-        lifecycleManager.registerEventHandler(
-            LifecycleEvents.COMMANDS
-        ) { commands ->
-            melodiaCommands.forEach { command ->
-                logger.debug("Registering Command: ${command.literal}")
-                command.register()
-                commands.registrar().register(command.build())
+        try {
+            this.setupErrorHandler()
+            try {
+                this.saveDefaultConfig()
+            } catch (_: IllegalArgumentException) {}
+
+            logger.trace("Registering Commands...")
+            lifecycleManager.registerEventHandler(
+                LifecycleEvents.COMMANDS
+            ) { commands ->
+                melodiaCommands.forEach { command ->
+                    logger.debug("Registering Command: ${command.literal}")
+                    command.register()
+                    commands.registrar().register(command.build())
+                }
             }
+
+            logger.trace("Registering Listeners...")
+            listeners.forEach { listener ->
+                logger.debug("Registering Listener: ${listener::class.simpleName}")
+                Bukkit.getPluginManager().registerEvents(listener, this)
+            }
+
+            logger.trace("Saving Resource Files...")
+            resourceFiles.forEach { file ->
+                logger.debug("Saving File: $file")
+                this.saveResource(file, true)
+            }
+
+            logger.trace("Loading data...")
+            savingManagers.forEach { manager -> manager.load() }
+
+            logger.info("${logger.prefix} started!")
+        } catch (e: Throwable) {
+            logger.error(e = e)
+            throw e
         }
-
-        logger.trace("Registering Listeners...")
-        listeners.forEach { listener ->
-            logger.debug("Registering Listener: ${listener::class.simpleName}")
-            Bukkit.getPluginManager().registerEvents(listener, this)
-        }
-
-        logger.trace("Saving Resource Files...")
-        resourceFiles.forEach { file ->
-            logger.debug("Saving File: $file")
-            this.saveResource(file, true)
-        }
-
-        logger.trace("Loading data...")
-        savingManagers.forEach { manager -> manager.load() }
-
-        logger.info("${logger.prefix} started!")
 
     }
 
     override fun onDisable() {
-        logger.trace("Saving data...")
-        savingManagers.forEach { manager -> manager.save() }
+        try {
+            logger.trace("Saving data...")
+            savingManagers.forEach { manager -> manager.save() }
+        } catch (e: Throwable) {
+            logger.error(e = e)
+            throw e
+        }
+    }
+
+    private fun setupErrorHandler() {
+        val originalHandler = Thread.getDefaultUncaughtExceptionHandler()
+        val pack = this::class.java.packageName
+
+        Thread.setDefaultUncaughtExceptionHandler { thread, throwable ->
+            if (!checkIsPlugin(throwable, pack)) {
+                originalHandler?.uncaughtException(thread, throwable)
+                return@setDefaultUncaughtExceptionHandler
+            }
+
+            this.logger.error(e = throwable)
+        }
+    }
+
+    private fun checkIsPlugin(throwable: Throwable?, pack: String): Boolean {
+        if (throwable == null) return false
+        val isThisPlugin = throwable.stackTrace.any { it.className.startsWith(pack) }
+        return isThisPlugin || checkIsPlugin(throwable.cause, pack)
     }
 
 }

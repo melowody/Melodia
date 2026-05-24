@@ -63,8 +63,8 @@ class ConsoleLogger(val prefix: String, val level: ConsoleLevel) {
 
     fun info(msg: String) = writeMessage(ConsoleLevel.INFO, msg)
 
-    fun error(msg: String, e: Exception) {
-        writeMessage(ConsoleLevel.ERROR, msg)
+    fun error(msg: String? = null, e: Throwable) {
+        if (msg != null) writeMessage(ConsoleLevel.ERROR, msg)
         writeMessage(ConsoleLevel.ERROR, e.stackTraceToString())
     }
 
