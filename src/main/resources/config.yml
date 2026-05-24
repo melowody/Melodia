@@ -1,0 +1,5 @@
+# The folder to save UUID-Name combos to
+uuid_folder: "uuid"
+
+# The in-game key to use for hotbar items
+hotbar_key: "hotbar_item"

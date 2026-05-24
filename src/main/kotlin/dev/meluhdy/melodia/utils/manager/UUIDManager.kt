@@ -6,10 +6,12 @@ import dev.meluhdy.melodia.manager.MelodiaSavingManager
 import dev.meluhdy.melodia.misc.serialization.MelodiaSerializer
 import dev.meluhdy.melodia.misc.serialization.SerializerElement
 import dev.meluhdy.melodia.utils.FileUtils
+import dev.meluhdy.melodia.utils.FileUtils.requireString
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
+import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
@@ -62,7 +64,7 @@ object UUIDManager: MelodiaSavingManager<UUIDNameConverter>(), Listener {
     private const val UUID_TO_NAME: String = "https://api.mojang.com/user/profile/%s"
 
     val baseFolder: String
-        get() = FileUtils.getFile(Melodia.melodiaInstance, "uuid").absolutePath
+        get() = FileUtils.getFile(Melodia.melodiaInstance, (Melodia.melodiaInstance.config as YamlConfiguration).requireString("uuid_folder")).absolutePath
 
     @EventHandler
     fun onPlayerJoin(event: PlayerJoinEvent) {

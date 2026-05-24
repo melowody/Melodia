@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-private const val ISO8601_FORMAT = "yyyy-MM-dd'T'HH-mm-ss.SSSZ"
+private const val ISO8601_FORMAT = "yyyy-MM-dd'T'HH-mm-ss"
 
 @JvmName("toIsoStringNullable")
 fun Date?.toIsoString(): String? {
