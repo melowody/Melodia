@@ -6,8 +6,7 @@ import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
 import java.io.IOException
 import java.security.InvalidParameterException
-import java.util.Properties
-import kotlin.jvm.Throws
+import java.util.*
 
 @Suppress("unused")
 object FileUtils {

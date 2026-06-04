@@ -18,7 +18,7 @@ import org.bukkit.event.player.PlayerJoinEvent
 import java.io.File
 import java.net.URI
 import java.security.InvalidParameterException
-import java.util.UUID
+import java.util.*
 
 /**
  * This is the object used to cache conversions between UUIDs and Names.
@@ -64,7 +64,7 @@ object UUIDManager: MelodiaSavingManager<UUIDNameConverter>(), Listener {
     private const val UUID_TO_NAME: String = "https://api.mojang.com/user/profile/%s"
 
     val baseFolder: String
-        get() = FileUtils.getFile(Melodia.melodiaInstance, (Melodia.melodiaInstance.config as YamlConfiguration).requireString("uuid_folder")).absolutePath
+        get() = FileUtils.getFile(Melodia.plugin, (Melodia.plugin.config as YamlConfiguration).requireString("uuid_folder")).absolutePath
 
     @EventHandler
     fun onPlayerJoin(event: PlayerJoinEvent) {

@@ -23,7 +23,7 @@ data class MelodiaArgument<T : Any>(val name: String, val type: ArgumentType<T>,
         val out = Commands.argument(name, type)
         this.suggestions?.let { out.suggests(it) }
         out.executes { ctx ->
-            Melodia.melodiaInstance.logger.debug("Attempting to execute $name")
+            Melodia.plugin.logger.debug("Attempting to execute $name")
             return@executes if (checkAnnotations(ctx, this.executor)) this.executor.call(ctx) else 0
         }
         return out
@@ -40,9 +40,9 @@ abstract class MelodiaCommand(literal: String) : LiteralArgumentBuilder<CommandS
 
     companion object {
         fun checkAnnotations(ctx: CommandContext<CommandSourceStack>, function: KFunction<*>): Boolean {
-            Melodia.melodiaInstance.logger.trace("Checking Annotations for ${function.name}")
+            Melodia.plugin.logger.trace("Checking Annotations for ${function.name}")
             function.annotations.forEach { annotation ->
-                Melodia.melodiaInstance.logger.debug("Found Annotation: ${annotation::class.simpleName}")
+                Melodia.plugin.logger.debug("Found Annotation: ${annotation::class.simpleName}")
                 val sender = ctx.source.sender
                 when (annotation) {
                     is UserOnly -> {

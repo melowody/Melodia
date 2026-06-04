@@ -10,7 +10,7 @@ import dev.meluhdy.melodia.utils.LoggingUtils
 import dev.meluhdy.melodia.utils.TranslationFolder
 import dev.meluhdy.melodia.utils.manager.UUIDManager
 import org.bukkit.event.Listener
-import java.util.Locale
+import java.util.*
 
 class Melodia : MelodiaPlugin() {
 
@@ -29,11 +29,11 @@ class Melodia : MelodiaPlugin() {
     )
 
     companion object {
-        internal lateinit var melodiaInstance: Melodia
+        internal lateinit var plugin: Melodia
     }
 
     init {
-        melodiaInstance = this
+        plugin = this
     }
 
 }

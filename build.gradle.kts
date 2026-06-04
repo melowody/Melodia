@@ -23,11 +23,18 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    api("com.jeff-media:custom-block-data:2.2.4")
+    api("com.jeff-media:MorePersistentDataTypes:2.4.0")
 }
 
 val targetJavaVersion = 25
 kotlin {
     jvmToolchain(targetJavaVersion)
+}
+
+tasks.shadowJar {
+    relocate("com.jeff_media.customblockdata", "dev.meluhdy.libs.customblockdata")
+    relocate("com.jeff_media.morepersistentdatatypes", "dev.meluhdy.libs.morepersistentdatatypes")
 }
 
 tasks.build {

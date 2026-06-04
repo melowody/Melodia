@@ -4,14 +4,13 @@ import dev.meluhdy.melodia.Melodia
 import dev.meluhdy.melodia.utils.FileUtils
 import dev.meluhdy.melodia.utils.toIsoString
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import java.io.File
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
-import java.util.Date
+import java.util.*
 
 /**
  * An extension of MelodiaManager with file saving capabilities
@@ -38,12 +37,12 @@ abstract class MelodiaSavingManager<T: MelodiaItem> : MelodiaManager<T>() {
                     val uuid = deserializeObject(serializer.decodeFromString<JsonElement>(it.readText())).uuid
                     if (uuid !in uuids) it.delete()
                 } catch (e: Exception) {
-                    Melodia.melodiaInstance.logger.error("Could not process file ${it.name}", e)
+                    Melodia.plugin.logger.error("Could not process file ${it.name}", e)
                 }
             }
             ArrayList(savingObjects).forEach {
                 if (!shouldSave(it)) return@forEach
-                Melodia.melodiaInstance.logger.trace("Saving ${it.uuid} in Manager ${this::class.simpleName}")
+                Melodia.plugin.logger.trace("Saving ${it.uuid} in Manager ${this::class.simpleName}")
                 try {
                     val file = getFile(it)
                     Files.createDirectories(file.parentFile.toPath())
@@ -53,7 +52,7 @@ abstract class MelodiaSavingManager<T: MelodiaItem> : MelodiaManager<T>() {
                     temp.writeText(serializer.encodeToString(serializeObject(it)))
                     Files.move(temp.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE)
                 } catch (e: IOException) {
-                    Melodia.melodiaInstance.logger.error("Could not save object ${it.uuid} in ${this.javaClass.simpleName}", e)
+                    Melodia.plugin.logger.error("Could not save object ${it.uuid} in ${this.javaClass.simpleName}", e)
                 }
             }
         }
@@ -65,11 +64,11 @@ abstract class MelodiaSavingManager<T: MelodiaItem> : MelodiaManager<T>() {
     open fun load() {
         synchronized(objects) {
             loadSaves().forEach {
-                Melodia.melodiaInstance.logger.trace("Loading item ${it.name} in Manager ${this::class.simpleName}")
+                Melodia.plugin.logger.trace("Loading item ${it.name} in Manager ${this::class.simpleName}")
                 try {
                     add(deserializeObject(serializer.decodeFromString<JsonElement>(it.readText())))
-                } catch (e: SerializationException) {
-                    Melodia.melodiaInstance.logger.error("Could not load item ${it.name} in ${this.javaClass.simpleName}", e)
+                } catch (e: Exception) {
+                    Melodia.plugin.logger.error("Could not load item ${it.name} in ${this.javaClass.simpleName}", e)
                     it.renameTo(FileUtils.getFile(it.parentFile, ".corrupted", "${it.name}.${Date().toIsoString()}"))
                 }
             }

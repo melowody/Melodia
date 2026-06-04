@@ -11,19 +11,19 @@ import java.net.MalformedURLException
 import java.net.URI
 import java.net.URL
 import java.security.InvalidParameterException
-import java.util.UUID
+import java.util.*
 
 object ItemUtils {
 
     private fun getProfile(url: URI) : PlayerProfile {
-        Melodia.melodiaInstance.logger.debug("Getting Profile from Url: $url")
+        Melodia.plugin.logger.debug("Getting Profile from Url: $url")
         val profile = Bukkit.createProfile(UUID.randomUUID())
         val textures = profile.textures
         val urlObject: URL
         try {
             urlObject = url.toURL()
         } catch (e: MalformedURLException) {
-            Melodia.melodiaInstance.logger.error("Failed to load profile from Url: $url", e)
+            Melodia.plugin.logger.error("Failed to load profile from Url: $url", e)
             throw RuntimeException("Invalid URL", e)
         }
         textures.skin = urlObject
@@ -39,7 +39,7 @@ object ItemUtils {
      * @param lore The lore to give it, line by line
      */
     fun modifyItem(item: ItemStack, title: Component? = null, vararg lore: Component): ItemStack {
-        Melodia.melodiaInstance.logger.debug("Modifying Item: ${item.type.name} with title $title and lore ${lore.joinToString(", ")}")
+        Melodia.plugin.logger.debug("Modifying Item: ${item.type.name} with title $title and lore ${lore.joinToString(", ")}")
         val itemMeta = item.itemMeta
         if (title != null) itemMeta.displayName(title)
         itemMeta.lore(lore.toList())
@@ -67,7 +67,7 @@ object ItemUtils {
      * @param lore The lore of the ItemStack.
      */
     fun createSkull(skullUrl: String, count: Int = 1, title: Component? = null, vararg lore: Component): ItemStack {
-        Melodia.melodiaInstance.logger.debug("Creating $count skull${if (count != 1) 's' else ""} with URL $skullUrl, title $title, and lore ${lore.joinToString(", ")}")
+        Melodia.plugin.logger.debug("Creating $count skull${if (count != 1) 's' else ""} with URL $skullUrl, title $title, and lore ${lore.joinToString(", ")}")
         val item = ItemStack(Material.PLAYER_HEAD, count)
         if (skullUrl.isEmpty()) return modifyItem(item, title, *lore)
 
@@ -90,7 +90,7 @@ object ItemUtils {
      *
      */
     fun createSkull(player: UUID, count: Int = 1, title: Component? = null, vararg lore: Component): ItemStack {
-        Melodia.melodiaInstance.logger.debug("Creating $count skull${if (count != 1) 's' else ""} with UUID $player, title $title, and lore ${lore.joinToString(", ")}")
+        Melodia.plugin.logger.debug("Creating $count skull${if (count != 1) 's' else ""} with UUID $player, title $title, and lore ${lore.joinToString(", ")}")
         val item = ItemStack(Material.PLAYER_HEAD, count)
         val itemMeta = item.itemMeta as SkullMeta
         itemMeta.owningPlayer = Bukkit.getOfflinePlayer(player)

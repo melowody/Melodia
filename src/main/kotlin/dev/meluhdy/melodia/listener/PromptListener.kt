@@ -7,7 +7,7 @@ import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
-import java.util.UUID
+import java.util.*
 
 object PromptListener : Listener {
 
@@ -16,13 +16,13 @@ object PromptListener : Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     fun on(e: AsyncChatEvent) {
         val player = e.player
-        Melodia.melodiaInstance.logger.debug("Received Message: ${(e.message() as TextComponent).content()}")
+        Melodia.plugin.logger.debug("Received Message: ${(e.message() as TextComponent).content()}")
         if (!prompts.containsKey(player.uniqueId)) return
-        Melodia.melodiaInstance.logger.debug("Prompted Player: ${player.name}")
+        Melodia.plugin.logger.debug("Prompted Player: ${player.name}")
         e.isCancelled = true
         val callback = prompts[player.uniqueId]
         prompts.remove(player.uniqueId)
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Melodia.melodiaInstance) {
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Melodia.plugin) {
             callback?.invoke(e.message() as TextComponent)
         }
     }

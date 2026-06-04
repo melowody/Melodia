@@ -3,7 +3,6 @@ package dev.meluhdy.melodia.utils
 import dev.meluhdy.melodia.Melodia
 import dev.meluhdy.melodia.MelodiaPlugin
 import dev.meluhdy.melodia.listener.PromptListener
-import net.kyori.adventure.key.InvalidKeyException
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.Component.text
 import net.kyori.adventure.text.TextComponent
@@ -11,9 +10,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
-import java.util.Locale
-import java.util.PropertyResourceBundle
-import java.util.ResourceBundle
+import java.util.*
 
 data class TranslationFolder(val folderName: String, val defaultLang: Locale)
 
@@ -34,7 +31,7 @@ internal class TranslationBundleControl(val plugin: MelodiaPlugin) : ResourceBun
         reload: Boolean
     ): ResourceBundle? {
         val resourceName = "$baseName/${locale.language.lowercase()}.properties"
-        Melodia.melodiaInstance.logger.debug("Attempting to load bundle from: $resourceName w/ plugin $plugin")
+        Melodia.plugin.logger.debug("Attempting to load bundle from: $resourceName w/ plugin $plugin")
 
         val stream = plugin.getResource(resourceName) ?: return null
         return stream.use { PropertyResourceBundle(it.reader(Charsets.UTF_8)) }
@@ -85,7 +82,7 @@ object TextUtils {
             val key = it.groupValues[1]
 
             if (visited.contains(key)) {
-                Melodia.melodiaInstance.logger.error("Circular dependency in key \"$key\" in plugin ${plugin::class.java.simpleName}", java.security.InvalidKeyException(key))
+                Melodia.plugin.logger.error("Circular dependency in key \"$key\" in plugin ${plugin::class.java.simpleName}", java.security.InvalidKeyException(key))
                 return@replace it.value
             }
 
@@ -105,7 +102,7 @@ object TextUtils {
      * Translates a message and returns a MiniMessage
      */
     fun translate(plugin: MelodiaPlugin, id: String, lang: Locale, vararg args: Any): String {
-        Melodia.melodiaInstance.logger.debug("Translating ID $id in ${plugin::class.simpleName} into ${lang.language} with args ${args.joinToString(", ")}")
+        Melodia.plugin.logger.debug("Translating ID $id in ${plugin::class.simpleName} into ${lang.language} with args ${args.joinToString(", ")}")
         val template = getTranslationString(plugin, id, lang)
 
         if (args.isEmpty()) return template
@@ -127,7 +124,7 @@ object TextUtils {
     }
 
     fun getTranslatedStringList(plugin: MelodiaPlugin, id: String, lang: Locale, vararg args: Any): ArrayList<TranslatedString> {
-        Melodia.melodiaInstance.logger.debug("Getting list of translation strings for id $id in plugin ${plugin::class.simpleName}")
+        Melodia.plugin.logger.debug("Getting list of translation strings for id $id in plugin ${plugin::class.simpleName}")
         val out = arrayListOf<TranslatedString>()
         val bundle = getBundle(plugin, lang)
         var index = 0
@@ -147,7 +144,7 @@ object TextUtils {
     }
 
     fun translateList(plugin: MelodiaPlugin, id: String, lang: Locale, vararg args: Any): List<String> {
-        Melodia.melodiaInstance.logger.debug("Translating list in ${plugin::class.simpleName} into ${lang.language} with ID $id and args ${args.joinToString(", ")}")
+        Melodia.plugin.logger.debug("Translating list in ${plugin::class.simpleName} into ${lang.language} with ID $id and args ${args.joinToString(", ")}")
         return this.getTranslatedStringList(plugin, id, lang, *args).map { ts -> translate(plugin, ts.id, lang, *ts.args) }
     }
 
