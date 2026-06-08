@@ -13,7 +13,7 @@ object PromptListener : Listener {
 
     val prompts: HashMap<UUID, (TextComponent) -> Unit> = HashMap()
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.LOWEST)
     fun on(e: AsyncChatEvent) {
         val player = e.player
         Melodia.plugin.logger.debug("Received Message: ${(e.message() as TextComponent).content()}")

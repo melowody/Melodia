@@ -52,6 +52,10 @@ fun String.fromLegacyMessage(identifier: Char = '&'): Component = LegacyComponen
 
 fun Component.toLegacyMessage(identifier: Char = '&'): String = LegacyComponentSerializer.legacy(identifier).serialize(this)
 
+fun Player.sendMessage(plugin: MelodiaPlugin, string: TranslatedString) = this.sendMessage(plugin, string.id,  *string.args)
+
+fun Player.sendMessage(plugin: MelodiaPlugin, stringId: String, vararg args: Any) = this.sendMessage(TextUtils.translate(plugin, stringId, this.locale(), *args))
+
 /**
  * A collection of functions to deal with text and chat messages
  */
@@ -154,9 +158,7 @@ object TextUtils {
     }
 
     fun broadcastChat(plugin: MelodiaPlugin, stringId: String, vararg args: Any) {
-        Bukkit.getOnlinePlayers().forEach { player ->
-            player.sendMessage { translate(plugin, stringId, player.locale(), *args).fromLegacyMessage() }
-        }
+        Bukkit.getOnlinePlayers().forEach { it.sendMessage(plugin, stringId, *args) }
     }
 
     fun broadcastChat(component: Component) {
